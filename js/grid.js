@@ -18,7 +18,7 @@ function spawnTile() {
 
 function currentInput() {
     const currentInput = document.createElement('div');
-    currentInput.classList.add("input", "cursor");
+    currentInput.classList.add("cursor");
     const tile = document.querySelector(".tile");
     tile.append(currentInput);
 }
