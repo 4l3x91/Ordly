@@ -1,18 +1,29 @@
+html[data-theme="dark-mode"] {
+    --background-color: #1b1b20;
+    --background-color-variant: #3d3d4a;
+    --background-color-second-variant: #6b6b86;
+    --background-color-input-variant: #313146e8;
+  
+    --text-color: whitesmoke;
+    --text-color-select: #1b1b20;
+    --text-color-variant: #9d9d9d;
+    --text-color-placeholder: #bebebe;
+  }
+  
 * {
     padding: 0;
     margin: 0;
     user-select: none;
-    color: white !important;
+    color: var(--text-color);
     font-family: 'Dosis', sans-serif;
 }
 
 #root, html, body {
     height: 100%;
-    /* width: 100%; */
 }
 
 body {
-    background-color: #9c2aac;
+    background-color: var(--background-color);
 }
 
 header {
@@ -56,7 +67,7 @@ main {
 .tile {
     width: 100%;
     height: 100%;
-    background-color: rgba(83, 12, 116, 0.69);
+    background-color: var(--background-color-variant);
     border-radius: 15px;
     overflow: hidden;
     position: relative;
@@ -80,7 +91,7 @@ button {
     text-transform: uppercase;
     border-radius: 10px;
     font-size: 18px;
-    background-color: rgba(83, 12, 116, 0.69);
+    background-color: var(--background-color-variant);
     outline: 0;
     border: none;
 }
@@ -145,14 +156,14 @@ header span {
   }
   
   .input {
-    background-color: #3a0a4a;
+    background-color: var(--background-color-input-variant);
     height: 100%;
   }
 
   .cursor::after {
     -webkit-animation: blink 1s ease-in-out infinite;
     animation: blink 1s ease-in-out infinite;
-    background: #9c2aac;
+    background: var(--text-color);
     bottom: .5rem;
     content: "";
     height: .2rem;
