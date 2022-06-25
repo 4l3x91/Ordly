@@ -8,5 +8,6 @@ function main() {
 
 function printRandomWord() {
     const randomNumber = Math.floor(Math.random() * words.length);
-    console.log(words[randomNumber]);
+    // console.log(words[randomNumber]);
+    return words[randomNumber];
 }
