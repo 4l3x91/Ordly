@@ -6,6 +6,7 @@ let word = '';
 function gameLoop() {
   chosenWord = getRandomWord();
   console.log("The correct word is: " + chosenWord);
+  checkInput();
 }
 
 
@@ -19,7 +20,7 @@ function keyPressed(e) {
   const character = e.key;
   if (keys.includes(character)) buildWord(character);
   if(word.length == 5 && character == "Enter") checkAnswer();
-  if(word.length > 0 && e.key == "Backspace") backspaceKey();
+  if(word.length > 0 && character == "Backspace") backspaceKey();
 }
 
 document.addEventListener("click", (e) => {
@@ -30,7 +31,11 @@ document.addEventListener("click", (e) => {
 
   const play = document.querySelector(".play");
 
-  if (keys.includes(character)) buildWord(character);
+  if (keys.includes(character))
+  {
+    console.log(character);
+    buildWord(character);
+  }
 
   if(clickedCharacter === backspace || clickedCharacter === backspaceIcon && word.length > 0) backspaceKey();
 
@@ -39,15 +44,29 @@ document.addEventListener("click", (e) => {
 
 
 function buildWord(character) {
-  if (word.length != 5) word += character;
+  if (word.length != 5)
+  {
+    word += character;
+    checkInput();
+  }
+
+  if(chosenWord.includes(character))
+  {
+    console.log("There is a " + character + " in this word")
+  }
 }
 
 function backspaceKey() {
+  const element = document.getElementsByClassName("input")[word.length-1];
+  element.firstChild.remove();
+  
   let editedWord = word.slice(0, -1);
   word = editedWord;
+  updateGame(element);
 }
 
 function checkAnswer() {
+  checkRightWord();
   console.log("Let's see... you guessed: " + word);
   currentGuess++;
   if(chosenWord === word) restartGame(); // Add rightAnswer();
@@ -62,6 +81,80 @@ function restartGame() {
 }
 
 function wrongAnswer() {
-  if(currentGuess == numberOfGuesses) console.log("You lost the game.");
-  else console.log("You're down a guess. You now have " + (numberOfGuesses - currentGuess) + " guesses left.")
+  if(currentGuess < numberOfGuesses){
+  word = '';
+  const grid = document.querySelector(".grid");
+  const startChild = grid.children[currentGuess*5];
+  updateGame(startChild);
+  }
+  else{
+    console.log("You lost the game.");
+  }
+}
+
+
+function checkRightWord() {
+  for(let i = 0; i < word.length; i++)
+  {
+    if(notExist(word[i]))
+    {
+      renderAnswer(word[i], i, "wrong");
+    }
+    else if(isKindaRight(word[i], i))
+    {
+      renderAnswer(word[i], i, "kinda");
+    }
+    else if(isRightPlace(word[i], i))
+    {
+      renderAnswer(word[i], i, "right");
+    }
+  }
+}
+
+function updateGame(tile) {
+  setCursor(tile);
+}
+
+function renderAnswer(character, index, classname)
+{
+  const grid = document.querySelector(".grid");
+  const selectedTile = grid.children[(currentGuess *5)+index];
+  selectedTile.classList.add(classname);
+  const keyboard = document.querySelector(".keys");
+  const keys = keyboard.children;
+  for (let i = 0; i < keys.length; i++) {
+    if(character === keyboard.children[i].getAttribute("data-char")) {
+      keyboard.children[i].className=classname;
+    }
+  } 
+}
+
+
+function isRightPlace(character, index)
+{
+  if(chosenWord.includes(character) && chosenWord.indexOf(character) === index)
+  {
+    console.log("Match");
+    return true;
+  }
+  return false;
+}
+
+function isKindaRight(character, index)
+{
+  // Ge keyboard tangenter en annan färg
+  if(chosenWord.includes(character) && chosenWord.indexOf(character) !== index)
+  {
+    return true;
+  }
+   return false;
+}
+
+function notExist(character)
+{
+  if(!chosenWord.includes(character))
+  {
+    return true;
+  }
+  return false;
 }
