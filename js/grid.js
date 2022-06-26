@@ -37,11 +37,13 @@ function checkInput() {
             tile = grid.children[index];
             span.innerHTML = word[newIndex];
             tile.append(span);
+            tile.classList.add("input");
             updateGame(tile);
         }
         if(newIndex === word.length) {
             tile = grid.children[index];
             updateGame(tile);
+            tile.classList.add("input");
             break;
         }
     }
@@ -56,10 +58,7 @@ function setCursor(tile) {
     for (element of children) {
         element.classList.remove("cursor");   
     }
-    if(word.length < 5) tile.classList.add("cursor", "input");
-    if(word.length === 5) 
-    {
-        tile.classList.remove("cursor"); 
-        tile.classList.add("input");
-     }
+
+    if(word.length < 5) tile.classList.add("cursor");
+    if(word.length === 5) tile.classList.remove("cursor"); 
 }

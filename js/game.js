@@ -9,7 +9,6 @@ function gameLoop() {
   checkInput();
 }
 
-
 function getRandomWord() {
   const randomNumber = Math.floor(Math.random() * words.length);
   return words[randomNumber];
@@ -42,11 +41,11 @@ document.addEventListener("click", (e) => {
   if(clickedCharacter === play && word.length == 5) checkAnswer();
 });
 
-
 function buildWord(character) {
   if (word.length != 5)
   {
     word += character;
+    
     checkInput();
   }
 
@@ -57,12 +56,19 @@ function buildWord(character) {
 }
 
 function backspaceKey() {
-  const element = document.getElementsByClassName("input")[word.length-1];
-  element.firstChild.remove();
+
+  const grid = document.querySelector(".grid");
+  let currentTile;
+  for(let i = 0; i < word.length; i++)
+  {
+    currentTile = grid.children[(currentGuess * 5) + i];
+  }
+  currentTile.classList.remove("input");
+  currentTile.firstChild.remove();
   
-  let editedWord = word.slice(0, -1);
+  let editedWord = word.slice(0, - 1);
   word = editedWord;
-  updateGame(element);
+  updateGame(currentTile);
 }
 
 function checkAnswer() {
@@ -91,7 +97,6 @@ function wrongAnswer() {
     console.log("You lost the game.");
   }
 }
-
 
 function checkRightWord() {
   for(let i = 0; i < word.length; i++)
@@ -128,7 +133,6 @@ function renderAnswer(character, index, classname)
     }
   } 
 }
-
 
 function isRightPlace(character, index)
 {
