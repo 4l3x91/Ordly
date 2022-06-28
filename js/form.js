@@ -148,7 +148,29 @@ function createShareButton(modalMid) {
     shareButton.classList.add("share");
     shareButton.append(shareButtonIcon);
     shareButton.innerHTML += "Dela ditt resultat";
+    shareButton.addEventListener("click", (e) => {if(e.target === shareButton) shareResult(modalMid)});
     modalMid.append(shareButton);
+}
+
+function shareResult(modalMid) {
+    let result = `Femman #1\n🏅 ${currentGuess}/${numberOfGuesses} -`;
+
+    // TODO: FIX THIS LOGIC - print every guess with correct tile for every guessed char
+    // for (let index = 0; index < guessedWords.length; index++) {
+        
+        for (let index = 0; index < word.length; index++) {
+            if(word[index] === chosenWord[index])
+            {
+                result += " 🟩"
+            }
+        // }
+    }
+
+    navigator.clipboard.writeText(result);
+    const copyText = document.createElement('div');
+    copyText.classList.add("result-text");
+    copyText.innerHTML = "Resultat kopierat, klistra in i valfritt textfält!";
+    modalMid.append(copyText);
 }
 
 const mapGuesses = {

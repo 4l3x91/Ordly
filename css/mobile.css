@@ -340,7 +340,7 @@ header, section {
   padding-top: .5rem;
 }
 
-.correct-word {
+.correct-word, .result-text {
   margin: 1rem auto;
 }
 
