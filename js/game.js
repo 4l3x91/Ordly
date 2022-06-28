@@ -2,11 +2,23 @@ const numberOfGuesses = 6;
 let currentGuess = 0;
 let chosenWord;
 let word = '';
+let gameIsActive = true;
+let guessedWords = [];
+
 
 function gameLoop() {
-  chosenWord = getRandomWord();
-  console.log("The correct word is: " + chosenWord);
-  checkInput();
+  if(gameIsActive)
+  {
+    chosenWord = getRandomWord();
+    console.log("The correct word is: " + chosenWord);
+    checkInput();
+    gameState(gameIsActive);
+  }
+}
+
+function gameState(gameIsActive) {
+  console.log(gameIsActive)
+  return gameIsActive;
 }
 
 function getRandomWord() {
@@ -14,88 +26,105 @@ function getRandomWord() {
   return words[randomNumber];
 }
 
-document.addEventListener("keydown", keyPressed);
-function keyPressed(e) {
-  const character = e.key;
-  if (keys.includes(character)) buildWord(character);
-  if(word.length == 5 && character == "Enter") checkAnswer();
-  if(word.length > 0 && character == "Backspace") backspaceKey();
-}
-
-document.addEventListener("click", (e) => {
+if(gameState) {
+  document.addEventListener("keydown", keyPressed);
+  function keyPressed(e) {
+    const character = e.key;
+    if (keys.includes(character)) buildWord(character);
+    if(word.length == 5 && character == "Enter") checkAnswer();
+    if(word.length > 0 && character == "Backspace") backspaceKey();
+  }
+  
+  document.addEventListener("click", (e) => {
   const backspaceIcon = document.querySelector(".fa-backspace");
   const backspace = document.querySelector(".backspace");
   const character = e.target.innerHTML;
   const clickedCharacter = e.target;
-
+  
   const play = document.querySelector(".play");
-
+  
   if (keys.includes(character))
   {
-    console.log(character);
+    // console.log(character);
     buildWord(character);
   }
-
+  
   if(clickedCharacter === backspace || clickedCharacter === backspaceIcon && word.length > 0) backspaceKey();
-
+  
   if(clickedCharacter === play && word.length == 5) checkAnswer();
 });
+}
 
 function buildWord(character) {
-  if (word.length != 5)
+  if (word.length != 5 && gameIsActive)
   {
     word += character;
     
     checkInput();
   }
-
-  if(chosenWord.includes(character))
-  {
-    console.log("There is a " + character + " in this word")
-  }
 }
 
 function backspaceKey() {
-
-  const grid = document.querySelector(".grid");
-  let currentTile;
-  for(let i = 0; i < word.length; i++)
+  if(gameIsActive)
   {
-    currentTile = grid.children[(currentGuess * 5) + i];
+    const grid = document.querySelector(".grid");
+    let currentTile;
+    for(let i = 0; i < word.length; i++)
+    {
+      currentTile = grid.children[(currentGuess * 5) + i];
+    }
+    currentTile.classList.remove("input");
+    currentTile.firstChild.remove();
+    
+    let editedWord = word.slice(0, - 1);
+    word = editedWord;
+    updateGame(currentTile);
   }
-  currentTile.classList.remove("input");
-  currentTile.firstChild.remove();
-  
-  let editedWord = word.slice(0, - 1);
-  word = editedWord;
-  updateGame(currentTile);
+}
+
+function checkWordExists() {
+  if(words.includes(word)) return true;
+  else return false;
 }
 
 function checkAnswer() {
-  checkRightWord();
-  console.log("Let's see... you guessed: " + word);
-  currentGuess++;
-  if(chosenWord === word) restartGame(); // Add rightAnswer();
-  else wrongAnswer();
+  if(!checkWordExists()) console.log("Ordet finns inte.")
+  if(gameIsActive && checkWordExists())
+  {
+    checkRightWord();
+    currentGuess++;
+    guessedWords.push(word);
+    if(chosenWord === word) endGame(); // Add rightAnswer();
+    else wrongAnswer();
+  }
 }
 
-function restartGame() {
-  console.log("Congratulations! You guessed the right word in " + currentGuess + " try!");
-  word = '';
-  currentGuess = 0;
-  gameLoop();
+function endGame() {
+  gameIsActive = false;
+  endGameStyling();
+  openForm();
+}
+
+function endGameStyling() {
+  const playButton = document.querySelector(".play");
+  const delButton = document.querySelector(".fa-backspace");
+  const grid = document.querySelector(".keys");
+  for (let index = 0; index < grid.children.length; index++) {
+    grid.children[index].style.color = '#3d3d4a';
+    
+  }
+  playButton.innerHTML = "";
+  delButton.style.color = "#3d3d4a";
 }
 
 function wrongAnswer() {
-  if(currentGuess < numberOfGuesses){
+  if(currentGuess < numberOfGuesses) {
   word = '';
   const grid = document.querySelector(".grid");
-  const startChild = grid.children[currentGuess*5];
+  const startChild = grid.children[currentGuess * 5];
   updateGame(startChild);
   }
-  else{
-    console.log("You lost the game.");
-  }
+  else endGame();
 }
 
 function checkRightWord() {
@@ -138,7 +167,7 @@ function isRightPlace(character, index)
 {
   if(chosenWord.includes(character) && chosenWord.indexOf(character) === index)
   {
-    console.log("Match");
+    // console.log("Match");
     return true;
   }
   return false;
@@ -146,12 +175,10 @@ function isRightPlace(character, index)
 
 function isKindaRight(character, index)
 {
+  // console.log("I'm here! " + chosenWord.indexOf(character));
   // Ge keyboard tangenter en annan färg
-  if(chosenWord.includes(character) && chosenWord.indexOf(character) !== index)
-  {
-    return true;
-  }
-   return false;
+    if(chosenWord.includes(character) && chosenWord.indexOf(character) != index) return true;
+    return false;
 }
 
 function notExist(character)

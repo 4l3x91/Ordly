@@ -29,11 +29,8 @@ function checkInput() {
     let tile;
     for (let index = startIndex; index < endIndex; index++) {
         let newIndex = index - startIndex;
-        console.log("index: "+ index);
-        // console.log(startIndex);
-        // console.log(endIndex);
+
         if(word.length > 0 && newIndex < word.length) {
-            console.log(word.length);
             tile = grid.children[index];
             span.innerHTML = word[newIndex];
             tile.append(span);
@@ -47,6 +44,7 @@ function checkInput() {
             break;
         }
     }
+    gameState(gameIsActive);
 }
 /**
  * @param {Element} tile

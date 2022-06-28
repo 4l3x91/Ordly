@@ -17,6 +17,7 @@
     <script defer src="js/words.js"></script>
     <script defer src="js/main.js"></script>
     <script defer src="js/game.js"></script>
+    <script defer src="js/form.js"></script>
     <title>Femman</title>
 </head>
 
@@ -24,9 +25,13 @@
     <div id="root">
         <div class="app">
             <header>
-                <span>?</span>
+                <span onClick="openForm()">
+                    <i class="fa-solid fa-info"></i>
+                </span>
                 <span>Femman</span>
-                <span>!</span>
+                <span onClick="openForm()">
+                    <i class="fa-solid fa-chart-simple"></i>
+                </span>
             </header>
             <main>
                 <section class="play--area">
