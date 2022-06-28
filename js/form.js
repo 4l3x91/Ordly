@@ -66,6 +66,7 @@ function createMidModal() {
 
     if(!gameIsActive) createTodayGameStats(modalMid);
     if(!gameIsActive) createShareButton(modalMid);
+    if(!gameIsActive) createCorrectWord(modalMid);
 
     return modalMid;
 }
@@ -107,6 +108,24 @@ function createGuessingStats(modalMid) {
     modalMid.append(numberOfTriesContainer);
 }
 
+function createCorrectWord(modalMid) {
+    if(!guessedWords.includes(chosenWord))
+    {
+        const correctWordContainer = document.createElement('div');
+        correctWordContainer.classList.add("correct-word");
+        const correctWord = document.createElement('h3');
+        correctWord.innerHTML = "Dagens rätta ord var: ";
+        const correctWordSpan = document.createElement('strong');
+        correctWordSpan.innerHTML = chosenWord;
+
+        correctWordContainer.append(correctWord);
+        correctWord.append(correctWordSpan);
+        modalMid.append(correctWordContainer);
+
+    }
+}
+
+
 function createTodayGameStats(modalMid) {
     const guessContainer = document.createElement('div');
     guessContainer.classList.add("guesses-today");
@@ -120,12 +139,6 @@ function createTodayGameStats(modalMid) {
         guessContainer.append(guessDiv);
     }
 
-    if(!guessedWords.includes(chosenWord))
-    {
-        const correctWord = document.createElement('h6');
-        correctWord.innerHTML = "Dagens rätta ord var: "+ chosenWord;
-        guessContainer.append(correctWord);
-    }
 }
 
 function createShareButton(modalMid) {
