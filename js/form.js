@@ -127,17 +127,17 @@ function createCorrectWord(modalMid) {
 
 
 function createTodayGameStats(modalMid) {
-    const guessContainer = document.createElement('div');
-    guessContainer.classList.add("guesses-today");
-    modalMid.append(guessContainer);
-    const guessTitle = document.createElement('h4');
-    guessTitle.innerHTML += "Dagens spel";
-    guessContainer.append(guessTitle);
-    for (let index = 0; index < currentGuess; index++) {
-        const guessDiv = document.createElement('div');
-        guessDiv.innerHTML = guessedWords[index];
-        guessContainer.append(guessDiv);
-    }
+    // const guessContainer = document.createElement('div');
+    // guessContainer.classList.add("guesses-today");
+    // modalMid.append(guessContainer);
+    // const guessTitle = document.createElement('h4');
+    // guessTitle.innerHTML += "Dagens spel";
+    // guessContainer.append(guessTitle);
+    // for (let index = 0; index < currentGuess; index++) {
+    //     const guessDiv = document.createElement('div');
+    //     guessDiv.innerHTML = guessedWords[index];
+    //     guessContainer.append(guessDiv);
+    // }
 
 }
 
