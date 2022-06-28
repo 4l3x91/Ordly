@@ -153,17 +153,16 @@ function createShareButton(modalMid) {
 }
 
 function shareResult(modalMid) {
-    let result = `Femman #1\n🏅 ${currentGuess}/${numberOfGuesses} -`;
-
-    // TODO: FIX THIS LOGIC - print every guess with correct tile for every guessed char
-    // for (let index = 0; index < guessedWords.length; index++) {
+    let result = `Femman #1 - ${currentGuess}/${numberOfGuesses}`;
         
-        for (let index = 0; index < word.length; index++) {
-            if(word[index] === chosenWord[index])
-            {
-                result += " 🟩"
-            }
-        // }
+    for (let i = 0; i < guessedWords.length; i++) {
+        result += "\n"
+        
+        for (let index = 0; index < guessedWords[i].length; index++) {
+            if(guessedWords[i][index] === chosenWord[index]) result += " 🟩";
+            else if(chosenWord.includes(guessedWords[i][index]) && guessedWords[i][index] !== chosenWord[index]) result += " 🟧";
+            else if(!chosenWord.includes(guessedWords[i][index])) result += " ⬛"
+        }
     }
 
     navigator.clipboard.writeText(result);
