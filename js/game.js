@@ -145,7 +145,6 @@ function updateGame(tile) {
 }
 
 function renderAnswer(character, index, classname) {
-  console.log(classname);
   const grid = document.querySelector(".grid");
   const selectedTile = grid.children[currentGuess * 5 + index];
   selectedTile.classList.add(classname);
