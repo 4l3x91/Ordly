@@ -252,6 +252,7 @@ header, section {
   align-self: center;
   margin: 0 auto;
   text-align: center;
+  max-width: 95vw;
 }
 
 .modal-inner-top {
@@ -270,8 +271,15 @@ header, section {
 .stats {
   display: flex;
   justify-content: space-around;
-  margin: 1.5rem auto;
-  width: 90%;
+  margin: 1rem auto;
+  gap: .5rem;
+}
+/* TODO MOVE THIS */
+@media only screen and (max-width: 380px) {
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .share {

@@ -1,10 +1,17 @@
 function openForm() {
     createForm();
+    const modalContainer = document.querySelector(".modal-content");
+    modalContainer.addEventListener("click", (e) => {
+        if(e.target === modalContainer)
+        closeForm();
+    })
 }
 
 function closeForm() {
     const removeForm = document.querySelector(".modal-wrapper");
     removeForm.remove();
+
+
 }
 
 function createForm() {
@@ -112,6 +119,13 @@ function createTodayGameStats(modalMid) {
         guessDiv.innerHTML = guessedWords[index];
         guessContainer.append(guessDiv);
     }
+
+    if(!guessedWords.includes(chosenWord))
+    {
+        const correctWord = document.createElement('h6');
+        correctWord.innerHTML = "Dagens rätta ord var: "+ chosenWord;
+        guessContainer.append(correctWord);
+    }
 }
 
 function createShareButton(modalMid) {
@@ -124,6 +138,15 @@ function createShareButton(modalMid) {
     modalMid.append(shareButton);
 }
 
+const mapGuesses = {
+    "1": "ett",
+    "2": "två",
+    "3": "tre",
+    "4": "fyra",
+    "5": "fem",
+    "6": "sex"
+}
+
 function createStats(modalMid) {
     const modalMidTitle = document.createElement('h2');
     modalMidTitle.innerHTML = "Statistik";
@@ -132,11 +155,10 @@ function createStats(modalMid) {
     if(!gameIsActive)
     {
         const modalMidSubtitle = document.createElement('h5');
-        if(guessedWords.includes(chosenWord)) modalMidSubtitle.innerHTML = "Grattis, du klarade dagens spel!";
+        if(guessedWords.includes(chosenWord)) modalMidSubtitle.innerHTML = `Grattis, du klarade dagens spel på ${mapGuesses[currentGuess]} försök!`;
         else modalMidSubtitle.innerHTML = "Du klarade tyvärr inte dagens spel. Försök igen imorgon!";
         modalMid.append(modalMidSubtitle);
     }
-
 
     const modalMidStats = document.createElement('div');
     modalMidStats.classList.add("stats");
