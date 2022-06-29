@@ -373,11 +373,11 @@ header, section {
   }
 
   5% {
-    top: 10%;
+    top: 5%;
   }
   
   90% {
-    top: 10%;
+    top: 5%;
   }
 
   100% {
@@ -399,16 +399,65 @@ header, section {
 
 .tile.faulty {
   animation: .5s linear faulty;
+  animation-iteration-count: 3;
 }
 
 @keyframes faulty {
   0% {
     transform:translateX(0px);
   }
+  10% {
+    transform:translateX(8px);
+  }
+  20% {
+    transform:translateX(0px);
+  }
+  30% {
+    transform:translateX(-8px);
+  }
+  40% {
+    transform:translateX(0px);
+  }
   50% {
-    transform:translateX(5px);
+    transform:translateX(8px);
+  }
+  60% {
+    transform:translateX(0px);
+  }
+  70% {
+    transform:translateX(-8px);
+  }
+  80% {
+    transform:translateX(0px);
+  }
+  90% {
+    transform:translateX(8px);
   }
   100% {
     transform:translateX(0px);
+  }
+}
+
+.tile.jumpy {
+  animation: .5s linear jumpy;
+  animation-iteration-count: 3;
+}
+
+
+@keyframes jumpy {
+  0% {
+    transform:translateY(0px);
+  }
+  25% {
+    transform:translateY(12px);
+  }
+  50% {
+    transform:translateY(0px);
+  }
+  75% {
+    transform:translateY(-12px);
+  }
+  100% {
+    transform:translateY(0px);
   }
 }

@@ -189,7 +189,7 @@ function createStats(modalMid) {
     if(!gameIsActive)
     {
         const modalMidSubtitle = document.createElement('h5');
-        if(guessedWords.includes(chosenWord)) modalMidSubtitle.innerHTML = `Grattis, du klarade dagens spel på ${mapGuesses[currentGuess]} försök!`;
+        if(chosenWord === word) modalMidSubtitle.innerHTML = `Grattis, du klarade dagens spel på ${mapGuesses[currentGuess]} försök!`;
         else modalMidSubtitle.innerHTML = "Du klarade tyvärr inte dagens spel. Försök igen imorgon!";
         modalMid.append(modalMidSubtitle);
     }

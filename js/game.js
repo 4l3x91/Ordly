@@ -3,7 +3,11 @@ let currentGuess = 0;
 let chosenWord;
 let word = "";
 let gameIsActive = true;
-let guessedWords = [];
+
+let guessedWords = JSON.parse(localStorage.getItem("guesses"));
+if (!guessedWords) {
+  guessedWords = [];
+}
 
 function gameLoop() {
   if (gameIsActive) {
@@ -89,7 +93,7 @@ function checkAnswer() {
       const selectedTile = grid.children[currentGuess * 5 + index];
       setTimeout(() => {
         selectedTile.classList.add("faulty")
-      }, 20 * index);
+      }, 10 * index);
       setTimeout(() => {
         selectedTile.classList.remove("faulty")
       }, 500);
@@ -99,12 +103,45 @@ function checkAnswer() {
   }
   if (gameIsActive && checkWordExists()) {
     checkRightWord();
-    currentGuess++;
-    guessedWords.push(word);
-    if (chosenWord === word) endGame();
-    else wrongAnswer();
+
+    addGuess();
+
+    setTimeout(() =>
+    {
+      if (chosenWord === word)
+      {
+        winningAnimation();
+        endGame();
+      }
+      else wrongAnswer();
+    }, 2500)
+    }
+}
+
+function winningAnimation() {
+  for (let index = 0; index < word.length; index++) {
+
+    const grid = document.querySelector(".grid");
+    const selectedTile = grid.children[(currentGuess - 1) * 5 + index];
+    setTimeout(() => {
+      selectedTile.classList.add("jumpy");
+    }, 50 * index);
   }
 }
+
+function addGuess() {
+  const guess = {
+    word,
+    currentGuess
+  };
+
+  guessedWords.push(guess);
+  currentGuess++;
+  window.localStorage.setItem("guesses", JSON.stringify(guessedWords));
+  // renderAllGuesses();
+}
+
+
 
 function endGame() {
   gameIsActive = false;
@@ -112,7 +149,7 @@ function endGame() {
     openForm();
     endGameStyling();
 
-  }, 4000)
+  }, 4000);
 }
 
 function endGameStyling() {
@@ -157,6 +194,7 @@ function checkRightWord() {
 
 function updateGame(tile) {
   setCursor(tile);
+  renderAllGuesses();
 }
 
 function renderAnswer(character, index, classname) {
@@ -178,4 +216,11 @@ function renderAnswer(character, index, classname) {
       }, 400 * index);
     }
   }
+}
+
+
+function renderAllGuesses() {
+  const allGuesses = document.querySelectorAll("grid")
+  console.log(allGuesses);
+
 }
