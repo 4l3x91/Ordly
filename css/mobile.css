@@ -361,3 +361,19 @@ header, section {
   border-radius: 10px;
   font-size: 18px;
 }
+
+.keys button.flip, .tile.flip {
+  animation: .5s linear flip;
+}
+
+@keyframes flip {
+  0% {
+    transform: rotateX(0deg);
+  }
+  50% {
+    transform: rotateX(90deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}

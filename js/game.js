@@ -147,7 +147,9 @@ function updateGame(tile) {
 function renderAnswer(character, index, classname) {
   const grid = document.querySelector(".grid");
   const selectedTile = grid.children[currentGuess * 5 + index];
-  selectedTile.classList.add(classname);
+  setTimeout(() => {
+    selectedTile.classList.add(classname, "flip");
+  }, 500 * index);
   const keyboard = document.querySelector(".keys");
   const keys = keyboard.children;
   for (let i = 0; i < keys.length; i++) {
@@ -155,7 +157,10 @@ function renderAnswer(character, index, classname) {
       character === keyboard.children[i].getAttribute("data-char") &&
       !keyboard.children[i].classList.contains("right")
     ) {
-      keyboard.children[i].className = classname;
+      setTimeout(() => {
+        keyboard.children[i].className = classname;
+        keyboard.children[i].classList.add("flip");
+      }, 500 * index);
     }
   }
 }
