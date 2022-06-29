@@ -83,7 +83,19 @@ function checkWordExists() {
 
 function checkAnswer() {
   if (!checkWordExists()) {
+    for (let index = 0; index < word.length; index++) {
+      
+      const grid = document.querySelector(".grid");
+      const selectedTile = grid.children[currentGuess * 5 + index];
+      setTimeout(() => {
+        selectedTile.classList.add("faulty")
+      }, 20 * index);
+      setTimeout(() => {
+        selectedTile.classList.remove("faulty")
+      }, 500);
+    }
     alertWordDoesNotExist();
+
   }
   if (gameIsActive && checkWordExists()) {
     checkRightWord();
@@ -96,8 +108,11 @@ function checkAnswer() {
 
 function endGame() {
   gameIsActive = false;
-  endGameStyling();
-  openForm();
+  setTimeout(() => {
+    openForm();
+    endGameStyling();
+
+  }, 4000)
 }
 
 function endGameStyling() {
@@ -149,7 +164,7 @@ function renderAnswer(character, index, classname) {
   const selectedTile = grid.children[currentGuess * 5 + index];
   setTimeout(() => {
     selectedTile.classList.add(classname, "flip");
-  }, 500 * index);
+  }, 400 * index);
   const keyboard = document.querySelector(".keys");
   const keys = keyboard.children;
   for (let i = 0; i < keys.length; i++) {
@@ -160,7 +175,7 @@ function renderAnswer(character, index, classname) {
       setTimeout(() => {
         keyboard.children[i].className = classname;
         keyboard.children[i].classList.add("flip");
-      }, 500 * index);
+      }, 400 * index);
     }
   }
 }

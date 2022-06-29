@@ -350,7 +350,7 @@ header, section {
 
 .word-does-not-exist {
   position: absolute;
-  top: 10%;
+  top: -15%;
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -360,10 +360,29 @@ header, section {
   padding: 15px;
   border-radius: 10px;
   font-size: 18px;
+  animation: 4s linear slideIn;
 }
 
 .keys button.flip, .tile.flip {
-  animation: .5s linear flip;
+  animation: .6s linear flip;
+}
+
+@keyframes slideIn {
+  0% {
+    top: -15%;
+  }
+
+  5% {
+    top: 10%;
+  }
+  
+  90% {
+    top: 10%;
+  }
+
+  100% {
+    top: -15%;
+  }
 }
 
 @keyframes flip {
@@ -375,5 +394,21 @@ header, section {
   }
   100% {
     transform: rotateX(0deg);
+  }
+}
+
+.tile.faulty {
+  animation: .5s linear faulty;
+}
+
+@keyframes faulty {
+  0% {
+    transform:translateX(0px);
+  }
+  50% {
+    transform:translateX(5px);
+  }
+  100% {
+    transform:translateX(0px);
   }
 }
