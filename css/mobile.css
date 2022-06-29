@@ -461,3 +461,31 @@ header, section {
     transform:translateY(0px);
   }
 }
+
+.modal {
+  animation: 1s modalSlide;
+  animation-iteration-count: 1;
+}
+
+.modal-overlay {
+  animation: 1s modalOverlay;
+  animation-iteration-count: 1;
+}
+
+@keyframes modalSlide {
+  0% {
+    transform:translateY(-2000px);
+  }
+  100% {
+    transform:translateY(0px);
+  }
+}
+
+@keyframes modalOverlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

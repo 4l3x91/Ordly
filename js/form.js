@@ -109,7 +109,7 @@ function createGuessingStats(modalMid) {
 }
 
 function createCorrectWord(modalMid) {
-    if(!guessedWords.includes(chosenWord))
+    if(chosenWord !== word)
     {
         const correctWordContainer = document.createElement('div');
         correctWordContainer.classList.add("correct-word");

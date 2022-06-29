@@ -149,7 +149,7 @@ function endGame() {
     openForm();
     endGameStyling();
 
-  }, 4000);
+  }, 3000);
 }
 
 function endGameStyling() {
@@ -221,6 +221,4 @@ function renderAnswer(character, index, classname) {
 
 function renderAllGuesses() {
   const allGuesses = document.querySelectorAll("grid")
-  console.log(allGuesses);
-
 }
