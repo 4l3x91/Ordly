@@ -4,7 +4,7 @@ html[data-theme="dark-mode"] {
   --background-color-second-variant: #6b6b86;
   --background-color-input-variant: #313146e8;
   --background-color-right: #358606;
-  --background-color-kinda-right: #afac00;
+  --background-color-kinda-right: #b57e14;
   --background-color-wrong: #2c2c3a;
 
   --text-color: whitesmoke;
@@ -199,18 +199,6 @@ header, section {
   }
 }
 
-.right {
-  background-color: var(--background-color-right);
-}
-
-.kinda {
-  background-color: var(--background-color-kinda-right);
-}
-
-.wrong {
-  background-color: var(--background-color-wrong);
-}
-
 .modal-wrapper {
   position: absolute;
   margin: 0 auto;
@@ -245,7 +233,7 @@ header, section {
   border-radius: 20px;
   box-shadow: 6px 6px 8px rgba(0,0,0,0.75);
   box-sizing: border-box;
-  padding: 30px;
+  padding: 20px;
   width: 420px;
   min-height: 200px;
   background-color: var(--background-color-wrong);
@@ -488,4 +476,71 @@ header, section {
   to {
     opacity: 1;
   }
+}
+
+.how-to {
+  text-align: left;
+}
+
+.example-grid-container {
+  margin: .5rem auto;
+  background: #16161d;
+  padding: 20px 20px;
+  border-radius: 20px;
+}
+
+.example-grid-container h2 {
+  margin: 0 auto;
+}
+
+.example-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  margin: 1rem auto;
+  gap: .5rem;
+  scale: .9;
+}
+
+.example-tile {
+  width: 100%;
+  height: 100%;
+  background-color: var(--background-color-variant);
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 1/1.1;
+}
+
+.example-tile span {
+  height: 100%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  font-size: 34px;
+  text-transform: uppercase;
+}
+
+.info-text span {
+  padding: 5px;
+  line-height: 1.7;
+  border-radius: 5px;
+}
+
+.info-tips {
+  margin: 1rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+.right {
+  background-color: var(--background-color-right);
+}
+
+.kinda {
+  background-color: var(--background-color-kinda-right);
+}
+
+.wrong {
+  background-color: var(--background-color-wrong);
 }
