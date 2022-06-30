@@ -23,6 +23,7 @@ html[data-theme="dark-mode"] {
 
 #root, html, body {
   height: 100%;
+  width: 100%;
 }
 
 body {
@@ -31,7 +32,7 @@ body {
 
 header {
   margin: 0 auto;
-  max-width: 420px;
+  max-width: 480px;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -42,7 +43,7 @@ main {
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-width: 420px;
+  max-width: 480px;
 }
 
 .grid {
@@ -63,7 +64,7 @@ main {
   height: 100%;
   display: flex;
   flex-direction: column;
-  max-width: 420px;
+  max-width: 480px;
   padding: 0 10px;
 }
 
@@ -109,22 +110,23 @@ button {
 }
 
 .spacer {
-  grid-column-end: 3;
+  grid-column-end: 2;
   grid-column-start: 1;
 }
 
 .backspace {
   grid-column-end: 12;
-  grid-column-start: 10;
+  grid-column-start: 9;
   padding: 0px !important;
   font-size: 24px;
 }
 
 .play {
   grid-column-end: 12;
-  grid-column-start: 9;
+  grid-column-start: 1;
   font-size: 16px;
   letter-spacing: .2rem;
+  background: var(--background-color-second-variant);
 }
 
 header span {
@@ -200,27 +202,22 @@ header, section {
 }
 
 .modal-wrapper {
-  position: absolute;
-  margin: 0 auto;
-  align-items: center;
-  display: flex;
+  position: fixed;
 }
 
 .modal-wrapper, .modal-overlay {
   height: 100%;
-  left: 0;
-  right: 0;
-  top: 0;
   width: 100%;
+  left: 0;
+  top: 0;
 }
 
 .modal-content {
   height: 100%;
-  width: 100%;
-  display: flex;
   position: relative;
   z-index: 2;
   overflow: auto;
+
 }
 
 .modal-overlay {
@@ -235,15 +232,13 @@ header, section {
   box-shadow: 6px 6px 8px rgba(0,0,0,0.75);
   box-sizing: border-box;
   padding: 20px;
-  width: 420px;
+  width: 480px;
   min-height: 200px;
   background-color: var(--background-color-wrong);
   align-self: center;
-  margin: 0 auto;
+  margin: 2rem auto;
   text-align: center;
   max-width: 95vw;
-  max-height: 95vh;
-  overflow: auto;
 }
 
 .modal-inner-top {
@@ -270,6 +265,71 @@ header, section {
   .stats {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+/* TODO MOVE THIS */
+@media only screen and (max-height: 580px) {
+  header {
+    margin: 5px 0;
+  }
+
+  .grid {
+    padding: 0;
+    flex-grow: 0; 
+    gap: .3rem;
+    row-gap: .2rem;
+    grid-template-rows: auto;
+    align-content: center;
+  }
+
+  .container {
+    aspect-ratio: auto;
+    flex-grow: 0;
+    gap: 1.5rem;
+  }
+
+  .tile {
+    width: 6vh;
+    height: 6vh;
+  }
+
+  .tile span {
+    font-size: 2vw;
+  }
+
+  .tile {
+    border-radius: .2rem;
+  }
+
+  .keyboard button, .spacer {
+    display: none;
+  }
+
+  .play {
+    display: block !important;
+  }
+
+  button.play {
+    padding: 12px 0;
+    font-size: 14px;
+    grid-column-end: 10;
+    grid-column-start: 3;
+  }
+
+  .keys {
+    grid-template-rows: 1fr;
+    gap: .2rem;
+  }
+
+  .left-keys, .right-keys {
+    display: grid !important;
+  }
+
+  .cursor::after {
+  bottom: .3rem;
+  height: .1rem;
+  left: .5rem;
+  right: .5rem;
   }
 }
 
@@ -551,4 +611,37 @@ header, section {
 
 .wrong {
   background-color: var(--background-color-wrong);
+}
+
+/* split keyboard */
+.left-keys, .right-keys {
+  display: none;
+  align-self: center;
+  gap: .4rem;
+}
+
+.left-keys {
+  order: 1;
+  grid-template-columns: repeat(5, 1fr) !important;
+  grid-template-rows: repeat(3, 1fr) !important;
+}
+
+.grid {
+  order: 2;
+}
+
+.right-keys {
+  order: 3;
+  grid-template-columns: repeat(6, 1fr) !important;
+  grid-template-rows: repeat(2, 1fr) !important;
+}
+
+.right-keys button, .left-keys button {
+  padding: .5rem;
+  border-radius: .2rem;
+}
+
+.right-keys .backspace {
+  grid-column-end: 7;
+  grid-column-start: 3;
 }

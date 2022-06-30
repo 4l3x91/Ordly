@@ -32,7 +32,7 @@ if (gameState) {
   function keyPressed(e) {
     const character = e.key;
     if (keys.includes(character)) buildWord(character);
-    if (word.length == 5 && character == "Enter") checkAnswer();
+    if (word.length == 5 && character == " " || character == "Enter") checkAnswer();
     if (word.length > 0 && character == "Backspace") backspaceKey();
   }
 
