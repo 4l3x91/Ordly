@@ -351,9 +351,10 @@ header, section {
   animation: 4s linear slideIn;
 }
 
-.keys button.flip, .tile.flip {
-  animation: .6s linear flip;
+.keys button.flip, .tile.flip, .example-tile.flip {
+  animation: .5s linear flip;
 }
+
 
 @keyframes slideIn {
   0% {

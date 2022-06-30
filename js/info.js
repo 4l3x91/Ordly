@@ -1,9 +1,20 @@
 function openInfo() {
     createInfo();
+    const grid = document.querySelector(".example-grid");
+    const kids = grid.children;
+    setTimeout(() => {
+
+        for (let index = 0; index < kids.length; index++) {
+            setTimeout(() => {
+                kids[index].classList.add("flip");
+            }, 200 * index)
+        }
+    }, 1000);
+    
     const modalContainer = document.querySelector(".modal-content");
     modalContainer.addEventListener("click", (e) => {
-        if(e.target === modalContainer)
-        closeInfo();
+        if (e.target === modalContainer)
+            closeInfo();
     })
 }
 
@@ -71,32 +82,32 @@ function createInfo() {
     gridContainer.append(infoGridTitle);
 
     const exampleWordOne = "PROVA";
-    
+
     for (let index = 0; index < exampleWordOne.length; index++) {
         const infoTile = document.createElement('div');
         infoTile.classList.add('example-tile');
-        if(index == 0 || index == 4) infoTile.classList.add('right');
+        if (index == 0 || index == 4) infoTile.classList.add('right');
         else infoTile.classList.add('wrong');
         const infoTileContent = document.createElement('span');
         infoTileContent.innerHTML = exampleWordOne[index];
         infoTile.append(infoTileContent);
         infoTileContainer.append(infoTile);
     }
-    
+
     const exampleWordTwo = "TESTA";
-    
+
     for (let index = 0; index < exampleWordTwo.length; index++) {
         const infoTile = document.createElement('div');
         infoTile.classList.add('example-tile');
-        if(index == 2) infoTile.classList.add('kinda');
-        else if(index == 3) infoTile.classList.add('right');
+        if (index == 2) infoTile.classList.add('kinda');
+        else if (index == 3) infoTile.classList.add('right');
         else infoTile.classList.add('wrong');
         const infoTileContent = document.createElement('span');
         infoTileContent.innerHTML = exampleWordTwo[index];
         infoTile.append(infoTileContent);
         infoTileContainer.append(infoTile);
     }
-    
+
     gridContainer.append(infoTileContainer);
     const explainContainer = document.createElement('div');
     explainContainer.classList.add("info-text");
@@ -109,7 +120,7 @@ function createInfo() {
     infoCorrectLetterBox.innerHTML = "Grön";
     infoCorrectLetter.innerHTML = "ruta betyder att bokstaven finns i ordet och är på rätt plats.";
     infoCorrectContainer.append(infoCorrectLetterBox, infoCorrectLetter);
-    
+
     const infoKindaContainer = document.createElement('div');
     const infoKindaLetter = document.createElement('span');
     const infoKindaLetterBox = document.createElement('span');
@@ -117,7 +128,7 @@ function createInfo() {
     infoKindaLetterBox.innerHTML = "Orange";
     infoKindaLetter.innerHTML = "ruta betyder att bokstaven finns i ordet men är på fel plats.";
     infoKindaContainer.append(infoKindaLetterBox, infoKindaLetter);
-    
+
     const infoWrongContainer = document.createElement('div');
     const infoWrongLetter = document.createElement('span');
     const infoWrongLetterBox = document.createElement('span');
@@ -125,7 +136,7 @@ function createInfo() {
     infoWrongLetterBox.innerHTML = "Mörkgrå";
     infoWrongLetter.innerHTML = "ruta betyder att bokstaven inte finns i ordet.";
     infoWrongContainer.append(infoWrongLetterBox, infoWrongLetter);
-    
+
     explainContainer.append(infoCorrectContainer, infoKindaContainer, infoWrongContainer);
 
     const formOverlay = createModalOverlay();
