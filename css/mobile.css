@@ -533,6 +533,10 @@ header, section {
   gap: .75rem;
 }
 
+.info-tips div, .info-text span {
+  user-select: text;
+}
+
 .right {
   background-color: var(--background-color-right);
 }
