@@ -32,7 +32,7 @@ if (gameState) {
   function keyPressed(e) {
     const character = e.key;
     if (keys.includes(character)) buildWord(character);
-    if ((word.length == 5 && character == " ") || character == "Enter")
+    if ((word.length == 5 && character == " ") || character == "Enter" && word.length == 5)
       checkAnswer();
     if (word.length > 0 && character == "Backspace") backspaceKey();
   }
@@ -78,7 +78,8 @@ function backspaceKey() {
     for (let i = 0; i < word.length; i++) {
       currentTile = grid.children[currentGuess * 5 + i];
     }
-    currentTile.classList.remove("input");
+    console.log(currentTile);
+    currentTile.nextSibling.classList.remove("input");
     currentTile.firstChild.remove();
 
     let editedWord = word.slice(0, -1);

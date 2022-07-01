@@ -57,6 +57,6 @@ function setCursor(tile) {
         element.classList.remove("cursor");   
     }
 
-    if(word.length < 5) tile.classList.add("cursor");
+    if(word.length < 5) tile.classList.add("cursor", "input");
     if(word.length === 5) tile.classList.remove("cursor"); 
 }
