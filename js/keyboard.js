@@ -58,7 +58,7 @@ function spawnBackspace(keydivs) {
   const backspace = document.createElement("button");
   backspace.classList.add("backspace");
   const backSpaceIcon = document.createElement("i");
-  backSpaceIcon.classList.add("fas", "fa-backspace");
+  backSpaceIcon.classList.add("backspace-i", "fas", "fa-backspace");
   backspace.append(backSpaceIcon);
   keydivs.append(backspace);
 }

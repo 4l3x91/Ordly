@@ -59,35 +59,15 @@ function createRightKeys() {
   for (let i = 0; i < keysRight.length; i++) {
       spawnKey(keysRight, i, keydivs);        
   }
-  spawnBackspace(keydivs);
+  spawnSplitBackspace(keydivs);
   parent.append(keydivs);
 }
-
-function createEnter() {
-    const keydivs = document.querySelector(".keys");
-    for (let i = 0; i < 1; i++) {
-
-        spawnKey(keysLeft, i, keydivs);
-
-        if (keys[i] == "m")
-            spawnBackspace(keydivs);
-        if (i + 1 == keys.length)
-            spawnPlay(keydivs);
-    }
-}
-
-  function spawnKey(keys, i, keydivs) {
-    const key = document.createElement("button");
-    key.setAttribute("data-char", `${keys[i]}`);
-    key.innerHTML = keys[i];
-    keydivs.append(key);
-  }
   
-  function spawnBackspace(keydivs) {
+  function spawnSplitBackspace(keydivs) {
     const backspace = document.createElement("button");
-    backspace.classList.add("backspace");
+    backspace.classList.add("split-backspace");
     const backSpaceIcon = document.createElement("i");
-    backSpaceIcon.classList.add("fas", "fa-backspace");
+    backSpaceIcon.classList.add("backspace-x", "fas", "fa-backspace");
     backspace.append(backSpaceIcon);
     keydivs.append(backspace);
   }

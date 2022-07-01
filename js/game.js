@@ -32,24 +32,31 @@ if (gameState) {
   function keyPressed(e) {
     const character = e.key;
     if (keys.includes(character)) buildWord(character);
-    if (word.length == 5 && character == " " || character == "Enter") checkAnswer();
+    if ((word.length == 5 && character == " ") || character == "Enter")
+      checkAnswer();
     if (word.length > 0 && character == "Backspace") backspaceKey();
   }
 
   document.addEventListener("click", (e) => {
-    const backspaceIcon = document.querySelector(".fa-backspace");
+    const backspaceIcon = document.querySelector(".backspace-i");
+    const backspaceIconTwo = document.querySelector(".backspace-x");
     const backspace = document.querySelector(".backspace");
+    const backspaceSplit = document.querySelector(".split-backspace");
     const character = e.target.innerHTML;
     const clickedCharacter = e.target;
+    const backspaceDivs = [];
+    backspaceDivs.push(
+      backspaceIcon,
+      backspaceIconTwo,
+      backspace,
+      backspaceSplit
+    );
 
     const play = document.querySelector(".play");
 
     if (keys.includes(character)) buildWord(character);
 
-    if (
-      clickedCharacter === backspace ||
-      (clickedCharacter === backspaceIcon && word.length > 0)
-    )
+    if (backspaceDivs.includes(clickedCharacter) && word.length > 0)
       backspaceKey();
 
     if (clickedCharacter === play && word.length == 5) checkAnswer();
@@ -88,39 +95,33 @@ function checkWordExists() {
 function checkAnswer() {
   if (!checkWordExists()) {
     for (let index = 0; index < word.length; index++) {
-      
       const grid = document.querySelector(".grid");
       const selectedTile = grid.children[currentGuess * 5 + index];
       setTimeout(() => {
-        selectedTile.classList.add("faulty")
+        selectedTile.classList.add("faulty");
       }, 10 * index);
       setTimeout(() => {
-        selectedTile.classList.remove("faulty")
+        selectedTile.classList.remove("faulty");
       }, 500);
     }
     alertWordDoesNotExist();
-
   }
   if (gameIsActive && checkWordExists()) {
     checkRightWord();
 
     addGuess();
 
-    setTimeout(() =>
-    {
-      if (chosenWord === word)
-      {
+    setTimeout(() => {
+      if (chosenWord === word) {
         winningAnimation();
         endGame();
-      }
-      else wrongAnswer();
-    }, 2500)
-    }
+      } else wrongAnswer();
+    }, 2500);
+  }
 }
 
 function winningAnimation() {
   for (let index = 0; index < word.length; index++) {
-
     const grid = document.querySelector(".grid");
     const selectedTile = grid.children[(currentGuess - 1) * 5 + index];
     setTimeout(() => {
@@ -132,7 +133,7 @@ function winningAnimation() {
 function addGuess() {
   const guess = {
     word,
-    currentGuess
+    currentGuess,
   };
 
   guessedWords.push(guess);
@@ -141,26 +142,31 @@ function addGuess() {
   // renderAllGuesses();
 }
 
-
-
 function endGame() {
   gameIsActive = false;
   setTimeout(() => {
     openForm();
     endGameStyling();
-
   }, 3000);
 }
 
 function endGameStyling() {
-  const playButton = document.querySelector(".play");
-  const delButton = document.querySelector(".fa-backspace");
-  const grid = document.querySelector(".keys");
-  for (let index = 0; index < grid.children.length; index++) {
-    grid.children[index].style.color = "#3d3d4a";
+  const keyboard = document.getElementsByClassName("keys");
+  for (let i = 0; i < keyboard.length; i++) {
+    for (let y = 0; y < keyboard[i].children.length; y++) {
+      if (
+        !keyboard[i].children[y].classList.contains("right") &&
+        !keyboard[i].children[y].classList.contains("kinda") &&
+        !keyboard[i].children[y].classList.contains("wrong")
+      )
+        keyboard[i].children[y].style.color = "transparent";
+    }
+
+    const backspace = document.getElementsByClassName("fa-backspace");
+    for (let index = 0; index < backspace.length; index++) {
+      backspace[index].style.color = "transparent";
+    }
   }
-  playButton.innerHTML = "";
-  delButton.style.color = "#3d3d4a";
 }
 
 function wrongAnswer() {
@@ -203,22 +209,25 @@ function renderAnswer(character, index, classname) {
   setTimeout(() => {
     selectedTile.classList.add(classname, "flip");
   }, 400 * index);
-  const keyboard = document.querySelector(".keys");
-  const keys = keyboard.children;
-  for (let i = 0; i < keys.length; i++) {
-    if (
-      character === keyboard.children[i].getAttribute("data-char") &&
-      !keyboard.children[i].classList.contains("right")
-    ) {
-      setTimeout(() => {
-        keyboard.children[i].className = classname;
-        keyboard.children[i].classList.add("flip");
-      }, 400 * index);
+
+  const keyboard = document.getElementsByClassName("keys");
+
+  for (let i = 0; i < keyboard.length; i++) {
+    for (let y = 0; y < keyboard[i].children.length; y++) {
+      console.log(keyboard[i].children[y]);
+      if (
+        character === keyboard[i].children[y].getAttribute("data-char") &&
+        !keyboard[i].children[y].classList.contains("right")
+      ) {
+        setTimeout(() => {
+          keyboard[i].children[y].className = classname;
+          keyboard[i].children[y].classList.add("flip");
+        }, 400 * index);
+      }
     }
   }
 }
 
-
 function renderAllGuesses() {
-  const allGuesses = document.querySelectorAll("grid")
+  const allGuesses = document.querySelectorAll("grid");
 }

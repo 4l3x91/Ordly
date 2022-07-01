@@ -49,9 +49,7 @@ main {
 .grid {
   row-gap: 5px;
   display: grid;
-  max-width: 320px;
   width: 100%;
-  margin: 0 auto;
   flex-grow: 1;
   gap: .5rem;
   grid-template-columns: repeat(5, 1fr);
@@ -641,7 +639,7 @@ header, section {
   border-radius: .2rem;
 }
 
-.right-keys .backspace {
+.right-keys .split-backspace {
   grid-column-end: 7;
   grid-column-start: 3;
 }
