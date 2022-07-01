@@ -1,18 +1,28 @@
 const numberOfGuesses = 6;
 let currentGuess = 0;
-let chosenWord;
+let chosenWord = 'testa';
 let word = "";
 let gameIsActive = true;
 
-let guessedWords = JSON.parse(localStorage.getItem("guesses"));
-if (!guessedWords) {
-  guessedWords = [];
-}
+var hours = (new Date()).getHours();
+var minutes = (new Date()).getMinutes();
+if(hours == 06 && minutes == 00) chosenWord = getRandomWord();
+console.log(chosenWord)
+
+  const solutionWord = window.localStorage.getItem("chosenWord");
+  if(!solutionWord)
+  {
+    window.localStorage.setItem("chosenWord", chosenWord);
+  }
+  else {
+  }
+  let guessedWords = JSON.parse(localStorage.getItem("guesses"));
+  if (!guessedWords) {
+    guessedWords = [];
+  }
 
 function gameLoop() {
   if (gameIsActive) {
-    chosenWord = getRandomWord();
-    console.log("The correct word is: " + chosenWord);
     checkInput();
     gameState(gameIsActive);
   }
@@ -119,7 +129,13 @@ function checkAnswer() {
     addGuess();
 
     setTimeout(() => {
-      if (chosenWord === word) {
+      if (solutionWord === word) {
+        const totalWins = window.localStorage.getItem("totalWins");
+        const currentStreak = window.localStorage.getItem("currentStreak");
+        window.localStorage.setItem("totalWins", Number(totalWins) + 1);
+        window.localStorage.setItem("currentStreak", Number(currentStreak) + 1);
+        const longestStreak = window.localStorage.getItem("longestStreak");
+        if(currentStreak >= longestStreak) window.localStorage.setItem("longestStreak", Number(currentStreak) + 1)
         winningAnimation();
         endGame();
       } else wrongAnswer();
@@ -150,6 +166,8 @@ function addGuess() {
 }
 
 function endGame() {
+  const totalGames = window.localStorage.getItem("totalGames");
+  window.localStorage.setItem("totalGames", Number(totalGames) + 1);
   gameIsActive = false;
   setTimeout(() => {
     openForm();
@@ -182,23 +200,27 @@ function wrongAnswer() {
     const grid = document.querySelector(".grid");
     const startChild = grid.children[currentGuess * 5];
     updateGame(startChild);
-  } else endGame();
+  } else 
+  {
+    window.localStorage.setItem("currentStreak", 0);
+    endGame();
+  }
 }
 
 function checkRightWord() {
-  let remainingLetters = chosenWord;
+  let remainingLetters = solutionWord;
 
   for (let i = 0; i < word.length; i++) {
-    if (word[i] === chosenWord[i]) {
+    if (word[i] === solutionWord[i]) {
       remainingLetters = remainingLetters.replace(word[i], "");
       renderAnswer(word[i], i, "right");
-    } else if (!chosenWord.includes(word[i])) {
+    } else if (!solutionWord.includes(word[i])) {
       renderAnswer(word[i], i, "wrong");
     }
   }
 
   for (let i = 0; i < word.length; i++) {
-    if (remainingLetters.includes(word[i]) && word[i] !== chosenWord[i]) {
+    if (remainingLetters.includes(word[i]) && word[i] !== solutionWord[i]) {
       remainingLetters = remainingLetters.replace(word[i], "");
       renderAnswer(word[i], i, "kinda");
     }

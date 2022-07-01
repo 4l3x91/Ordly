@@ -180,8 +180,21 @@ const mapGuesses = {
     "5": "fem",
     "6": "sex"
 }
-
+// function updateStats() {
+//     const totalGames = window.localStorage.getItem("totalGames");
+//     document.querySelector(".stat-number").innerHTML = totalGames;
+//     const totalWins = window.localStorage.getItem("totalWins");
+//     const currentStreak = window.localStorage.getItem("currentStreak");
+//     const longestStreak = window.localStorage.getItem("longestStreak");
+//     const winPercentage = Math.round((totalWins / totalGames) * 100);
+//   }
+  
 function createStats(modalMid) {
+    const totalGames = window.localStorage.getItem("totalGames");
+    const totalWins = window.localStorage.getItem("totalWins");
+    const currentStreak = window.localStorage.getItem("currentStreak");
+    const longestStreak = window.localStorage.getItem("longestStreak");
+    const winPercentage = Math.round((totalWins / totalGames) * 100);
     const modalMidTitle = document.createElement('h2');
     modalMidTitle.innerHTML = "Statistik";
     modalMid.append(modalMidTitle);
@@ -204,7 +217,7 @@ function createStats(modalMid) {
     modalMidStatsPlayed.innerHTML = "spelade";
 
     const modalMidStatsPlayedNumber = document.createElement('div');
-    modalMidStatsPlayedNumber.innerHTML = "1";
+    modalMidStatsPlayedNumber.innerHTML = totalGames;
     modalMidStatsPlayedNumber.classList.add("stat-number");
 
     modalMidStats.append(modalMidStatsPlayedContainer);
@@ -218,7 +231,7 @@ function createStats(modalMid) {
     modalMidStatsWinPercentage.innerHTML = "vinst %";
 
     const modalMidStatsWinPercentageNumber = document.createElement('div');
-    modalMidStatsWinPercentageNumber.innerHTML = "100";
+    modalMidStatsWinPercentageNumber.innerHTML = winPercentage;
     modalMidStatsWinPercentageNumber.classList.add("stat-number");
 
     modalMidStats.append(modalMidStatsWinPercentageContainer);
@@ -233,7 +246,7 @@ function createStats(modalMid) {
     modalMidStatsCurrentStreak.innerHTML = "vinstperiod";
 
     const modalMidStatsCurrentStreakNumber = document.createElement('div');
-    modalMidStatsCurrentStreakNumber.innerHTML = "2";
+    modalMidStatsCurrentStreakNumber.innerHTML = currentStreak;
     modalMidStatsCurrentStreakNumber.classList.add("stat-number");
 
     modalMidStats.append(modalMidStatsCurrentStreakContainer);
@@ -247,7 +260,7 @@ function createStats(modalMid) {
     modalMidStatsLongestStreak.innerHTML = "längsta vinstperiod";
 
     const modalMidStatsLongestStreakNumber = document.createElement('div');
-    modalMidStatsLongestStreakNumber.innerHTML = "5";
+    modalMidStatsLongestStreakNumber.innerHTML = longestStreak;
     modalMidStatsLongestStreakNumber.classList.add("stat-number");
 
     modalMidStats.append(modalMidStatsLongestStreakContainer);
