@@ -76,11 +76,17 @@ function backspaceKey() {
     const grid = document.querySelector(".grid");
     let currentTile;
     for (let i = 0; i < word.length; i++) {
-      currentTile = grid.children[currentGuess * 5 + i];
+        currentTile = grid.children[currentGuess * 5 + i];
     }
-    console.log(currentTile);
-    currentTile.nextSibling.classList.remove("input");
-    currentTile.firstChild.remove();
+    if(currentGuess == 5 && word.length == 5)
+    {
+      currentTile.classList.remove("input")
+      currentTile.firstChild.remove();
+    }
+    else {
+      currentTile.nextSibling.classList.remove("input");
+      currentTile.firstChild.remove();
+    }
 
     let editedWord = word.slice(0, -1);
     word = editedWord;
@@ -215,7 +221,6 @@ function renderAnswer(character, index, classname) {
 
   for (let i = 0; i < keyboard.length; i++) {
     for (let y = 0; y < keyboard[i].children.length; y++) {
-      console.log(keyboard[i].children[y]);
       if (
         character === keyboard[i].children[y].getAttribute("data-char") &&
         !keyboard[i].children[y].classList.contains("right")
