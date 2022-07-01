@@ -19,6 +19,7 @@ html[data-theme="dark-mode"] {
   user-select: none;
   color: var(--text-color);
   font-family: 'Dosis', sans-serif;
+  touch-action: none;
 }
 
 #root, html, body {
