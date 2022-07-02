@@ -6,7 +6,12 @@ let gameIsActive = true;
 
 var hours = (new Date()).getHours();
 var minutes = (new Date()).getMinutes();
-if(hours == 06 && minutes == 00) chosenWord = getRandomWord();
+var seconds = (new Date()).getSeconds();
+if(hours == 21 && minutes == 51 && seconds == 00)
+{
+  chosenWord = getRandomWord();
+  window.localStorage.setItem("chosenWord", chosenWord);
+}
 console.log(chosenWord)
 
   const solutionWord = window.localStorage.getItem("chosenWord");
@@ -40,11 +45,13 @@ function getRandomWord() {
 if (gameState) {
   document.addEventListener("keydown", keyPressed);
   function keyPressed(e) {
-    const character = e.key;
-    if (keys.includes(character)) buildWord(character);
-    if ((word.length == 5 && character == " ") || character == "Enter" && word.length == 5)
-      checkAnswer();
-    if (word.length > 0 && character == "Backspace") backspaceKey();
+    if(!locked)
+    {
+      const character = e.key;
+      if (keys.includes(character)) buildWord(character);
+      if ((word.length == 5 && character == " ") || character == "Enter" && word.length == 5) lock();
+      if (word.length > 0 && character == "Backspace") backspaceKey();
+    }
   }
 
   document.addEventListener("click", (e) => {
@@ -69,9 +76,21 @@ if (gameState) {
     if (backspaceDivs.includes(clickedCharacter) && word.length > 0)
       backspaceKey();
 
-    if (clickedCharacter === play && word.length == 5) checkAnswer();
+    if (clickedCharacter === play && word.length == 5) lock();
   });
 }
+
+let locked = false;
+function lock() {
+  if(!locked) {
+    locked = true;
+    setTimeout(() => {
+      checkAnswer();
+    }, 10);
+  }
+}
+
+
 
 function buildWord(character) {
   if (word.length != 5 && gameIsActive) {
@@ -120,6 +139,7 @@ function checkAnswer() {
       setTimeout(() => {
         selectedTile.classList.remove("faulty");
       }, 500);
+      locked = false;
     }
     alertWordDoesNotExist();
   }
@@ -130,17 +150,23 @@ function checkAnswer() {
 
     setTimeout(() => {
       if (solutionWord === word) {
-        const totalWins = window.localStorage.getItem("totalWins");
-        const currentStreak = window.localStorage.getItem("currentStreak");
-        window.localStorage.setItem("totalWins", Number(totalWins) + 1);
-        window.localStorage.setItem("currentStreak", Number(currentStreak) + 1);
-        const longestStreak = window.localStorage.getItem("longestStreak");
-        if(currentStreak >= longestStreak) window.localStorage.setItem("longestStreak", Number(currentStreak) + 1)
+        updateStats();
         winningAnimation();
         endGame();
       } else wrongAnswer();
+      locked = false;
     }, 2500);
   }
+}
+
+function updateStats() {
+  const totalWins = window.localStorage.getItem("totalWins");
+  const currentStreak = window.localStorage.getItem("currentStreak");
+  const longestStreak = window.localStorage.getItem("longestStreak");
+  window.localStorage.setItem("totalWins", Number(totalWins) + 1);
+  window.localStorage.setItem("currentStreak", Number(currentStreak) + 1);
+  if (currentStreak > longestStreak)
+    window.localStorage.setItem("longestStreak", Number(currentStreak) + 1);
 }
 
 function winningAnimation() {
@@ -237,7 +263,7 @@ function renderAnswer(character, index, classname) {
   const selectedTile = grid.children[currentGuess * 5 + index];
   setTimeout(() => {
     selectedTile.classList.add(classname, "flip");
-  }, 400 * index);
+  }, 100 * index);
 
   const keyboard = document.getElementsByClassName("keys");
 
@@ -250,7 +276,7 @@ function renderAnswer(character, index, classname) {
         setTimeout(() => {
           keyboard[i].children[y].className = classname;
           keyboard[i].children[y].classList.add("flip");
-        }, 400 * index);
+        }, 100 * index);
       }
     }
   }

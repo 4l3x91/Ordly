@@ -190,11 +190,17 @@ const mapGuesses = {
 //   }
   
 function createStats(modalMid) {
-    const totalGames = window.localStorage.getItem("totalGames");
-    const totalWins = window.localStorage.getItem("totalWins");
-    const currentStreak = window.localStorage.getItem("currentStreak");
-    const longestStreak = window.localStorage.getItem("longestStreak");
-    const winPercentage = Math.round((totalWins / totalGames) * 100);
+    const totalGames = window.localStorage.getItem("totalGames") || 0;
+    const totalWins = window.localStorage.getItem("totalWins") || 0;
+    const currentStreak = window.localStorage.getItem("currentStreak") || 0;
+    const longestStreak = window.localStorage.getItem("longestStreak") || 0;
+
+    // if(!totalGames) window.localStorage.setItem("totalGames", 0);
+    // if(!totalWins) window.localStorage.setItem("totalWins", 0);
+    // if(!currentStreak) window.localStorage.setItem("currentStreak", 0);
+    // if(!longestStreak) window.localStorage.setItem("longestStreak", 0);
+
+    const winPercentage = Math.round((totalWins / totalGames) * 100) || 0;
     const modalMidTitle = document.createElement('h2');
     modalMidTitle.innerHTML = "Statistik";
     modalMid.append(modalMidTitle);
