@@ -264,7 +264,7 @@ header, section {
   gap: .5rem;
 }
 /* TODO MOVE THIS */
-@media only screen and (min-width: 300px) and (max-height: 440px) {
+@media only screen and (max-width: 300px) and (max-height: 440px) {
   header, section {
     margin: .5rem
   }
