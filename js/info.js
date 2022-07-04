@@ -23,7 +23,6 @@ function closeInfo() {
 
 function createInfo() {
   const app = document.querySelector(".app");
-  app.classList.add("pan");
   const formContainer = document.createElement("div");
   formContainer.classList.add("modal-wrapper");
   app.append(formContainer);

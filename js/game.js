@@ -1,82 +1,33 @@
 const numberOfGuesses = 6;
 let currentGuess = 0;
+let chosenWord = 'testa';
 let word = "";
 let gameIsActive = true;
-let chosenWord;
-let solutionWord;
 
-async function apiFetch() {
-  let response = await fetch('https://localhost:7083/api/v1/Ordly');
-  const json = await response.json();
-  console.log(json.name);
-  return json.name;
+var hours = (new Date()).getHours();
+var minutes = (new Date()).getMinutes();
+var seconds = (new Date()).getSeconds();
+if(hours == 21 && minutes == 51 && seconds == 00)
+{
+  chosenWord = getRandomWord();
+  window.localStorage.setItem("chosenWord", chosenWord);
 }
-async function checkLatestUser() {
-  let response = await fetch('https://localhost:7083/api/v1/User/latestUser');
-  const json = await response.json();
-  return json.id;
-}
+console.log(chosenWord)
 
-async function postUserScore(user) {
-  await fetch('https://localhost:7083/api/v1/User', {
-    method:"POST",
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      id: user,
-      totalGames: JSON.parse(localStorage.getItem("totalGames")),
-      totalWins: JSON.parse(localStorage.getItem("totalWins")),
-      currentStreak: JSON.parse(localStorage.getItem("currentStreak")),
-      longestStreak: JSON.parse(localStorage.getItem("longestStreak"))
-        })
-    }).then(result =>  {
-        console.log("Completed with result:", result);
-    }).catch(err => {
-        console.error(err);
-    });
-}
-
-async function fetchUser(userId) {
-  let response = await fetch(`https://localhost:7083/api/v1/User/${userId}`);
-  const json = await response.json();
-  return json;
-}
-
-async function mapUser(userId) {
-  const user = await fetchUser(userId);
-  window.localStorage.setItem("totalGames", await user.totalWins || 0);
-  window.localStorage.setItem("totalWins", await user.totalWins || 0);
-  window.localStorage.setItem("currentStreak", await user.totalWins || 0);
-  window.localStorage.setItem("totalWins", await user.totalWins || 0);
-  await postUserScore(userId);
-}
-
-async function initFetch() 
-{  
-  window.localStorage.setItem("chosenWord", await apiFetch());
-  solutionWord = window.localStorage.getItem("chosenWord");
-  let latestUser;
-
-  let getUser = JSON.parse(localStorage.getItem("userId"));
-  if(!getUser)
+  const solutionWord = window.localStorage.getItem("chosenWord");
+  if(!solutionWord)
   {
-    latestUser = await checkLatestUser();
-    console.log(latestUser);
-    window.localStorage.setItem("userId", Number(latestUser) + 1);
-    latestUser = window.localStorage.getItem("userId");
-    await postUserScore(latestUser);
+    window.localStorage.setItem("chosenWord", chosenWord);
   }
-  await mapUser(getUser);
-
+  else {
+  }
   let guessedWords = JSON.parse(localStorage.getItem("guesses"));
-  if (!guessedWords) guessedWords = [];
-  chosenWord = solutionWord;
-}
+  if (!guessedWords) {
+    guessedWords = [];
+  }
 
-async function gameLoop() {
+function gameLoop() {
   if (gameIsActive) {
-    await initFetch();
     checkInput();
     gameState(gameIsActive);
   }
@@ -195,6 +146,8 @@ function checkAnswer() {
   if (gameIsActive && checkWordExists()) {
     checkRightWord();
 
+    addGuess();
+
     setTimeout(() => {
       if (solutionWord === word) {
         updateStats();
@@ -219,11 +172,23 @@ function updateStats() {
 function winningAnimation() {
   for (let index = 0; index < word.length; index++) {
     const grid = document.querySelector(".grid");
-    const selectedTile = grid.children[(currentGuess) * 5 + index];
+    const selectedTile = grid.children[(currentGuess - 1) * 5 + index];
     setTimeout(() => {
       selectedTile.classList.add("jumpy");
-    }, 100 * index);
+    }, 50 * index);
   }
+}
+
+function addGuess() {
+  const guess = {
+    word,
+    currentGuess,
+  };
+
+  guessedWords.push(guess);
+  currentGuess++;
+  window.localStorage.setItem("guesses", JSON.stringify(guessedWords));
+  // renderAllGuesses();
 }
 
 function endGame() {
@@ -258,7 +223,6 @@ function endGameStyling() {
 function wrongAnswer() {
   if (currentGuess < numberOfGuesses) {
     word = "";
-    currentGuess++;
     const grid = document.querySelector(".grid");
     const startChild = grid.children[currentGuess * 5];
     updateGame(startChild);
@@ -299,7 +263,7 @@ function renderAnswer(character, index, classname) {
   const selectedTile = grid.children[currentGuess * 5 + index];
   setTimeout(() => {
     selectedTile.classList.add(classname, "flip");
-  }, 250 * index);
+  }, 100 * index);
 
   const keyboard = document.getElementsByClassName("keys");
 
@@ -312,7 +276,7 @@ function renderAnswer(character, index, classname) {
         setTimeout(() => {
           keyboard[i].children[y].className = classname;
           keyboard[i].children[y].classList.add("flip");
-        }, 250 * index);
+        }, 100 * index);
       }
     }
   }
