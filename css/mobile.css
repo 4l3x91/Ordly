@@ -22,6 +22,10 @@ html[data-theme="dark-mode"] {
   touch-action: none;
 }
 
+.modal-wrapper div {
+  touch-action: pan-y !important;
+}
+
 #root, html, body {
   height: 100%;
   width: 100%;
@@ -178,12 +182,12 @@ header, section {
   -webkit-animation: blink 1s ease-in-out infinite;
   animation: blink 1s ease-in-out infinite;
   background: var(--text-color);
-  bottom: .5rem;
   content: "";
-  height: .2rem;
   position: absolute;
-  left: 1rem;
-  right: 1rem;
+  bottom: 15%;
+  height: 3%;
+  left: 25%;
+  right: 25%;
 }
 
 @keyframes blink {
@@ -260,6 +264,19 @@ header, section {
   gap: .5rem;
 }
 /* TODO MOVE THIS */
+@media only screen and (min-width: 300px) and (max-height: 440px) {
+  header, section {
+    margin: .5rem
+  }
+  .tile {
+    padding: 0.1rem 0.1rem;
+  }
+  .keys button {
+    padding: .3rem;
+    font-size: initial;
+  }
+  }
+/* TODO MOVE THIS */
 @media only screen and (max-width: 380px) {
   .stats {
     display: grid;
@@ -322,13 +339,6 @@ header, section {
 
   .left-keys, .right-keys {
     display: grid !important;
-  }
-
-  .cursor::after {
-  bottom: .3rem;
-  height: .1rem;
-  left: .5rem;
-  right: .5rem;
   }
 }
 
