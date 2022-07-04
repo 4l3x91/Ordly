@@ -1,12 +1,12 @@
 document.addEventListener("DOMContentLoaded", main);
 var hasVisited = sessionStorage.getItem("ordly.se");
 
-function main() {
+async function main() {
   spawnGrid();
   createKeyboard();
   createSplitKeyboard();
-  gameLoop();
-
+  await gameLoop();
+  
   if (!hasVisited) {
     openInfo();
     sessionStorage.setItem("ordly.se", true);
