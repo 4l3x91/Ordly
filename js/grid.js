@@ -35,6 +35,7 @@ function checkInput() {
             span.innerHTML = word[newIndex];
             tile.append(span);
             tile.classList.add("input");
+            span.classList.add("pop");
             updateGame(tile);
         }
         if(newIndex === word.length) {

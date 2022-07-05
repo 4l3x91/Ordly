@@ -136,8 +136,20 @@ function createInfo() {
   explainContainer.append(
     infoCorrectContainer,
     infoKindaContainer,
-    infoWrongContainer
+    infoWrongContainer,
   );
+  
+  const playButtonContainer = document.createElement("div");
+  playButtonContainer.classList.add("play-button-container");
+  infoContainer.append(playButtonContainer);
+
+  const playButton = document.createElement("button");
+  playButton.classList.add("play-button", "play");
+  playButton.innerHTML = "SPELA";
+  playButtonContainer.append(playButton);
+  playButton.addEventListener("click", () => {
+    closeInfo();
+  }); 
 
   const formOverlay = createModalOverlay();
   formContainer.append(formOverlay);

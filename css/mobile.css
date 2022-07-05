@@ -1,7 +1,21 @@
+html[data-theme="light-mode"] {
+  --background-color: rgb(27, 27, 32);
+  --background-color-variant: #3d3d4a;
+  --background-color-second-variant: #7b7bb3;
+  --background-color-input-variant: #313146e8;
+  --background-color-right: #358606;
+  --background-color-kinda-right: #b57e14;
+  --background-color-wrong: #2c2c3a;
+
+  --text-color: whitesmoke;
+  --text-color-select: #1b1b20;
+  --text-color-variant: #9d9d9d;
+  --text-color-placeholder: #bebebe;
+}
 html[data-theme="dark-mode"] {
   --background-color: #1b1b20;
   --background-color-variant: #3d3d4a;
-  --background-color-second-variant: #6b6b86;
+  --background-color-second-variant: #7b7bb3;
   --background-color-input-variant: #313146e8;
   --background-color-right: #358606;
   --background-color-kinda-right: #b57e14;
@@ -101,6 +115,11 @@ main {
   margin: 0 auto;
 }
 
+.keys button:hover, .keys i:hover {
+  background-color: var(--background-color-second-variant);
+  cursor: pointer;
+}
+
 button {
   padding: 15px 0px;
   text-transform: uppercase;
@@ -129,6 +148,10 @@ button {
   font-size: 16px;
   letter-spacing: .2rem;
   background: var(--background-color-second-variant);
+}
+
+.play:hover {
+  background: var(--background-color-variant) !important;
 }
 
 header span {
@@ -189,6 +212,11 @@ header, section {
   right: 25%;
 }
 
+.tile span.pop {
+  -webkit-animation: pop .5s ease-in-out;
+  animation: pop .5s ease-in-out;
+}
+
 @keyframes blink {
   0% {
     opacity: 0;
@@ -200,6 +228,21 @@ header, section {
 
   100% {
     opacity: 0;
+  }
+}
+
+@keyframes pop {
+  0%
+  {
+    transform: scale(1);
+  }
+  50%
+  {
+    transform: scale(1.5); 
+  }
+  100%
+  {
+    transform: scale(1);
   }
 }
 
@@ -561,6 +604,11 @@ header, section {
   to {
     opacity: 1;
   }
+}
+
+.play-button {
+  width: 100%;
+  cursor: pointer;
 }
 
 .how-to {
