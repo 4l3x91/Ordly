@@ -3,32 +3,34 @@ let currentGuess = 0;
 let word = "";
 let gameIsActive = true;
 let chosenWord;
+let guessedWords = [];
 
 async function apiFetch() {
-  let response = await fetch("https://localhost:5001/api/v1/Ordly");
+  let response = await fetch("https://localhost:7083/api/v1/Ordly");
   const json = await response.json();
   console.log(json[0].name);
   return json[0].name;
 }
 async function checkLatestUser() {
-  let response = await fetch("https://localhost:5001/api/v1/User/latestUser");
+  let response = await fetch("https://localhost:7083/api/v1/User/latestUser");
   const json = await response.json();
   return json.userId;
 }
 
 async function postUserScore(user) {
   console.log("Post user ID: " + user);
-  await fetch("https://localhost:5001/api/v1/User", {
-    method: "POST",
+  console.log(window.localStorage.getItem("totalGames").toString());
+  await fetch("https://localhost:7083/api/v1/User", {
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      userId: user,
-      totalGames: JSON.parse(localStorage.getItem("totalGames")),
-      totalWins: JSON.parse(localStorage.getItem("totalWins")),
-      currentStreak: JSON.parse(localStorage.getItem("currentStreak")),
-      longestStreak: JSON.parse(localStorage.getItem("longestStreak")),
+      userId: `${user}`,
+      totalGames: window.localStorage.getItem("totalGames").toString(),
+      totalWins: window.localStorage.getItem("totalWins").toString(),
+      currentStreak: window.localStorage.getItem("currentStreak").toString(),
+      longestStreak: window.localStorage.getItem("longestStreak").toString(),
     }),
   })
     .then((result) => {
@@ -41,41 +43,44 @@ async function postUserScore(user) {
 
 async function fetchUser(userId) {
   console.log("Fetch user id: " + userId);
-  let response = await fetch(`https://localhost:5001/api/v1/User/${userId}`);
+  let response = await fetch(`https://localhost:7083/api/v1/User/${userId}`);
   const json = await response.json();
   return json;
 }
-console.log(chosenWord);
 
 async function mapUser(userId) {
   const user = await fetchUser(userId);
   console.log("Map user id: " + userId);
-  window.localStorage.setItem("totalGames", (await user.totalWins) || 0);
-  window.localStorage.setItem("totalWins", (await user.totalWins) || 0);
-  window.localStorage.setItem("currentStreak", (await user.totalWins) || 0);
-  window.localStorage.setItem("totalWins", (await user.totalWins) || 0);
+  // window.localStorage.setItem("totalGames", "0");
+  // window.localStorage.setItem("totalWins", await user.totalWins);
+  // window.localStorage.setItem("currentStreak", await user.totalWins);
+  // window.localStorage.setItem("totalWins", await user.totalWins);
   await postUserScore(userId);
 }
 
 async function initFetch() {
   window.localStorage.setItem("chosenWord", await apiFetch());
   solutionWord = window.localStorage.getItem("chosenWord");
-  let latestUser;
+  let userId = window.localStorage.getItem("userId");
 
-  if (!latestUser) {
+  if (!userId) {
     latestUser = await checkLatestUser();
     window.localStorage.setItem("userId", Number(latestUser) + 1);
     latestUser = window.localStorage.getItem("userId");
+    window.localStorage.setItem("totalGames", 0),
+    window.localStorage.setItem("totalWins", 0),
+    window.localStorage.setItem("currentStreak", 0),
+    window.localStorage.setItem("longestStreak", 0),
     await postUserScore(Number(latestUser));
   } else {
     getUser = JSON.parse(localStorage.getItem("userId"));
   }
-  await mapUser(latestUser);
 
   let guessedWords = JSON.parse(localStorage.getItem("guesses"));
   if (!guessedWords) {
     guessedWords = [];
   }
+}
 
   function gameLoop() {
     if (gameIsActive) {
@@ -200,7 +205,6 @@ async function initFetch() {
 
       setTimeout(() => {
         if (solutionWord === word) {
-          updateStats();
           winningAnimation();
           endGame();
         } else wrongAnswer();
@@ -210,6 +214,7 @@ async function initFetch() {
   }
 
   function updateStats() {
+    const userId = window.localStorage.getItem("userId");
     const totalWins = window.localStorage.getItem("totalWins");
     const currentStreak = window.localStorage.getItem("currentStreak");
     const longestStreak = window.localStorage.getItem("longestStreak");
@@ -217,6 +222,7 @@ async function initFetch() {
     window.localStorage.setItem("currentStreak", Number(currentStreak) + 1);
     if (currentStreak > longestStreak)
       window.localStorage.setItem("longestStreak", Number(currentStreak) + 1);
+    postUserScore(userId);
   }
 
   function winningAnimation() {
@@ -244,6 +250,7 @@ async function initFetch() {
   function endGame() {
     const totalGames = window.localStorage.getItem("totalGames");
     window.localStorage.setItem("totalGames", Number(totalGames) + 1);
+    updateStats();
     gameIsActive = false;
     setTimeout(() => {
       openForm();
@@ -334,4 +341,3 @@ async function initFetch() {
   function renderAllGuesses() {
     const allGuesses = document.querySelectorAll("grid");
   }
-}
