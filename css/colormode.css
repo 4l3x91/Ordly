@@ -1,0 +1,39 @@
+html[data-theme="light-mode"] {
+    --background-color: #92a691;
+    --background-color-variant: #bdcabc;
+    --background-color-input-variant: #ced9d0;
+    --background-color-second-variant: #dfeade;
+    --background-color-right: #4ed500;
+    --background-color-kinda-right: #ffa700;
+    --background-color-wrong: #aeaeae;
+  
+    --text-color: #000;
+    --text-color-select: #2d3b2b;
+    --text-color-variant: #0000008a;
+    --text-color-placeholder: #1e2e22;
+  }
+  
+  html[data-theme="dark-mode"] {
+    --background-color: #1b1b20;
+    --background-color-variant: #3d3d4a;
+    --background-color-second-variant: #7b7bb3;
+    --background-color-input-variant: #303045;
+    --background-color-right: #358606;
+    --background-color-kinda-right: #b57e14;
+    --background-color-wrong: #2c2c3a;
+  
+    --text-color: whitesmoke;
+    --text-color-select: #1b1b20;
+    --text-color-variant: #9d9d9d;
+    --text-color-placeholder: #bebebe;
+  }
+  
+
+  header input:checked + .slider,
+  .slider {
+    background-color: var(--background-color-variant);
+  }
+    
+  .slider::before {
+    background: var(--text-color);
+  }

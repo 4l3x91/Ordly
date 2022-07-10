@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", main);
 var hasVisited = sessionStorage.getItem("ordly.se");
 
 async function main() {
+  initColorMode();
   spawnGrid();
   createKeyboard();
   createSplitKeyboard();
