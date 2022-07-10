@@ -6,25 +6,26 @@ let chosenWord;
 let solutionWord;
 
 async function apiFetch() {
-  let response = await fetch('https://localhost:7083/api/v1/Ordly');
+  let response = await fetch('https://localhost:5001/api/v1/Ordly');
   const json = await response.json();
-  console.log(json.name);
-  return json.name;
+  console.log(json[0].name);
+  return json[0].name;
 }
 async function checkLatestUser() {
-  let response = await fetch('https://localhost:7083/api/v1/User/latestUser');
+  let response = await fetch('https://localhost:5001/api/v1/User/latestUser');
   const json = await response.json();
-  return json.id;
+  return json.userId;
 }
 
 async function postUserScore(user) {
-  await fetch('https://localhost:7083/api/v1/User', {
+  console.log("Post user ID: " + user);
+  await fetch('https://localhost:5001/api/v1/User', {
     method:"POST",
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      id: user,
+      userId: user,
       totalGames: JSON.parse(localStorage.getItem("totalGames")),
       totalWins: JSON.parse(localStorage.getItem("totalWins")),
       currentStreak: JSON.parse(localStorage.getItem("currentStreak")),
@@ -38,13 +39,15 @@ async function postUserScore(user) {
 }
 
 async function fetchUser(userId) {
-  let response = await fetch(`https://localhost:7083/api/v1/User/${userId}`);
+  console.log("Fetch user id: " + userId)
+  let response = await fetch(`https://localhost:5001/api/v1/User/${userId}`);
   const json = await response.json();
   return json;
 }
 
 async function mapUser(userId) {
   const user = await fetchUser(userId);
+    console.log("Map user id: " + userId)
   window.localStorage.setItem("totalGames", await user.totalWins || 0);
   window.localStorage.setItem("totalWins", await user.totalWins || 0);
   window.localStorage.setItem("currentStreak", await user.totalWins || 0);
@@ -58,16 +61,17 @@ async function initFetch()
   solutionWord = window.localStorage.getItem("chosenWord");
   let latestUser;
 
-  let getUser = JSON.parse(localStorage.getItem("userId"));
-  if(!getUser)
+  if(!latestUser)
   {
     latestUser = await checkLatestUser();
-    console.log(latestUser);
     window.localStorage.setItem("userId", Number(latestUser) + 1);
     latestUser = window.localStorage.getItem("userId");
-    await postUserScore(latestUser);
+    await postUserScore(Number(latestUser));
   }
-  await mapUser(getUser);
+  else {
+    getUser = JSON.parse(localStorage.getItem("userId"));
+  }
+  await mapUser(latestUser);
 
   let guessedWords = JSON.parse(localStorage.getItem("guesses"));
   if (!guessedWords) guessedWords = [];
