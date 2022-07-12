@@ -37,3 +37,7 @@ html[data-theme="light-mode"] {
   .slider::before {
     background: var(--text-color);
   }
+
+  .share {
+    background-color: var(--background-color);
+  }

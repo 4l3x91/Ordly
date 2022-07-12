@@ -14,10 +14,14 @@ function spawnTile() {
     grid.append(tile);
 }
 
+function renderCurrentGuess() {
+    for (let index = 0; index <= word.length; index++) {
+        const grid = document.querySelector(".grid");
+        const span = document.createElement("span");
 
-function spawnInput() {
-    const tile = document.querySelector(".tile");
-    tile.classList.add("input", "cursor");
+        if(word.length > 0 && index < word.length) renderLetter(grid, index, span, index);
+        if(index === word.length && index != 5) renderCursor(grid, index);
+    }
 }
 
 function checkInput() {
@@ -26,27 +30,35 @@ function checkInput() {
     const startIndex = currentGuess * 5;
     const endIndex = startIndex + 5;
     
-    let tile;
     for (let index = startIndex; index < endIndex; index++) {
         let newIndex = index - startIndex;
 
         if(word.length > 0 && newIndex < word.length) {
-            tile = grid.children[index];
-            span.innerHTML = word[newIndex];
-            tile.append(span);
-            tile.classList.add("input");
-            span.classList.add("pop");
-            updateGame(tile);
+            renderLetter(grid, index, span, newIndex);
         }
         if(newIndex === word.length) {
-            tile = grid.children[index];
-            updateGame(tile);
-            tile.classList.add("input");
+            renderCursor(grid, index);
             break;
         }
     }
     gameState(gameIsActive);
 }
+
+function renderLetter(grid, index, span, newIndex) {
+    tile = grid.children[index];
+    span.innerHTML = word[newIndex];
+    tile.append(span);
+    tile.classList.add("input");
+    span.classList.add("pop");
+    updateGame(tile);
+}
+
+function renderCursor(grid, index) {
+    tile = grid.children[index];
+    updateGame(tile);
+    tile.classList.add("input");
+}
+
 /**
  * @param {Element} tile
  */
@@ -59,5 +71,5 @@ function setCursor(tile) {
     }
 
     if(word.length < 5) tile.classList.add("cursor", "input");
-    if(word.length === 5) tile.classList.remove("cursor"); 
+    if(word.length === 5) tile.classList.remove("cursor");
 }

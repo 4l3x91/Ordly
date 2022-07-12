@@ -2,25 +2,21 @@ const numberOfGuesses = 6;
 let currentGuess = 0;
 let word = "";
 let gameIsActive = true;
-let chosenWord;
 let guessedWords = [];
 
 async function apiFetch() {
-  let response = await fetch("https://localhost:7083/api/v1/Ordly");
+  let response = await fetch("http://192.168.0.38:7083/api/v1/Ordly");
   const json = await response.json();
-  console.log(json[0].name);
   return json[0].name;
 }
 async function checkLatestUser() {
-  let response = await fetch("https://localhost:7083/api/v1/User/latestUser");
+  let response = await fetch("http://192.168.0.38:7083/api/v1/User/latestUser");
   const json = await response.json();
   return json.userId;
 }
 
 async function postUserScore(user) {
-  console.log("Post user ID: " + user);
-  console.log(window.localStorage.getItem("totalGames").toString());
-  await fetch("https://localhost:7083/api/v1/User", {
+  await fetch("http://192.168.0.38:7083/api/v1/User", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -42,25 +38,17 @@ async function postUserScore(user) {
 }
 
 async function fetchUser(userId) {
-  console.log("Fetch user id: " + userId);
-  let response = await fetch(`https://localhost:7083/api/v1/User/${userId}`);
+  let response = await fetch(`http://192.168.0.38:7083/api/v1/User/${userId}`);
   const json = await response.json();
   return json;
 }
 
 async function mapUser(userId) {
-  const user = await fetchUser(userId);
-  console.log("Map user id: " + userId);
-  // window.localStorage.setItem("totalGames", "0");
-  // window.localStorage.setItem("totalWins", await user.totalWins);
-  // window.localStorage.setItem("currentStreak", await user.totalWins);
-  // window.localStorage.setItem("totalWins", await user.totalWins);
   await postUserScore(userId);
 }
 
 async function initFetch() {
-  window.localStorage.setItem("chosenWord", await apiFetch());
-  solutionWord = window.localStorage.getItem("chosenWord");
+  solutionWord = await apiFetch();
   let userId = window.localStorage.getItem("userId");
 
   if (!userId) {
@@ -85,6 +73,8 @@ async function initFetch() {
   function gameLoop() {
     if (gameIsActive) {
       checkInput();
+      word = localStorage.getItem("currentWordGuess") || '';
+      renderCurrentGuess();
       gameState(gameIsActive);
     }
   }
@@ -110,6 +100,7 @@ async function initFetch() {
         )
           lock();
         if (word.length > 0 && character == "Backspace") backspaceKey();
+        window.localStorage.setItem("currentWordGuess", word);
       }
     }
 
@@ -152,7 +143,6 @@ async function initFetch() {
   function buildWord(character) {
     if (word.length != 5 && gameIsActive) {
       word += character;
-
       checkInput();
     }
   }
@@ -209,7 +199,7 @@ async function initFetch() {
           endGame();
         } else wrongAnswer();
         locked = false;
-      }, 2500);
+      }, 1000);
     }
   }
 
@@ -255,7 +245,7 @@ async function initFetch() {
     setTimeout(() => {
       openForm();
       endGameStyling();
-    }, 3000);
+    }, 2000);
   }
 
   function endGameStyling() {
@@ -280,6 +270,7 @@ async function initFetch() {
   function wrongAnswer() {
     if (currentGuess < numberOfGuesses) {
       word = "";
+      localStorage.setItem("currentWordGuess", word);
       const grid = document.querySelector(".grid");
       const startChild = grid.children[currentGuess * 5];
       updateGame(startChild);
@@ -311,7 +302,6 @@ async function initFetch() {
 
   function updateGame(tile) {
     setCursor(tile);
-    renderAllGuesses();
   }
 
   function renderAnswer(character, index, classname) {
@@ -336,8 +326,4 @@ async function initFetch() {
         }
       }
     }
-  }
-
-  function renderAllGuesses() {
-    const allGuesses = document.querySelectorAll("grid");
   }

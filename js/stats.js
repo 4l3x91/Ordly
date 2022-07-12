@@ -64,7 +64,6 @@ function createMidModal() {
     createStats(modalMid);
     createGuessingStats(modalMid);
 
-    if(!gameIsActive) createTodayGameStats(modalMid);
     if(!gameIsActive) createShareButton(modalMid);
     if(!gameIsActive) createCorrectWord(modalMid);
 
@@ -109,36 +108,19 @@ function createGuessingStats(modalMid) {
 }
 
 function createCorrectWord(modalMid) {
-    if(chosenWord !== word)
+    if(solutionWord !== word)
     {
         const correctWordContainer = document.createElement('div');
         correctWordContainer.classList.add("correct-word");
         const correctWord = document.createElement('h3');
         correctWord.innerHTML = "Dagens rätta ord var: ";
         const correctWordSpan = document.createElement('strong');
-        correctWordSpan.innerHTML = chosenWord;
+        correctWordSpan.innerHTML = solutionWord;
 
         correctWordContainer.append(correctWord);
         correctWord.append(correctWordSpan);
         modalMid.append(correctWordContainer);
-
     }
-}
-
-
-function createTodayGameStats(modalMid) {
-    // const guessContainer = document.createElement('div');
-    // guessContainer.classList.add("guesses-today");
-    // modalMid.append(guessContainer);
-    // const guessTitle = document.createElement('h4');
-    // guessTitle.innerHTML += "Dagens spel";
-    // guessContainer.append(guessTitle);
-    // for (let index = 0; index < currentGuess; index++) {
-    //     const guessDiv = document.createElement('div');
-    //     guessDiv.innerHTML = guessedWords[index];
-    //     guessContainer.append(guessDiv);
-    // }
-
 }
 
 function createShareButton(modalMid) {
@@ -153,16 +135,15 @@ function createShareButton(modalMid) {
 }
 
 function shareResult(modalMid) {
-    let result = `Femman #1 - ${currentGuess}/${numberOfGuesses}`;
-        
+    let result = `Ordly #gameId - ${currentGuess}/${numberOfGuesses}`;
+
     for (let i = 0; i < guessedWords.length; i++) {
         result += "\n"
-        
-        for (let index = 0; index < guessedWords[i].length; index++) {
-            if(guessedWords[i][index] === chosenWord[index]) result += " 🟩";
-            else if(chosenWord.includes(guessedWords[i][index]) && guessedWords[i][index] !== chosenWord[index]) result += " 🟧";
-            else if(!chosenWord.includes(guessedWords[i][index])) result += " ⬛"
-        }
+        for (let y = 0; y < guessedWords[i].word.length; y++) {
+            if(guessedWords[i].word[y] === solutionWord[y]) result += " 🟩";
+            else if(solutionWord.includes(guessedWords[i].word[y]) && guessedWords[i].word[y] !== solutionWord[y]) result += " 🟧";
+            else if(!solutionWord.includes(guessedWords[i].word[y])) result += " ⬛"
+        }   
     }
 
     navigator.clipboard.writeText(result);
@@ -180,25 +161,12 @@ const mapGuesses = {
     "5": "fem",
     "6": "sex"
 }
-// function updateStats() {
-//     const totalGames = window.localStorage.getItem("totalGames");
-//     document.querySelector(".stat-number").innerHTML = totalGames;
-//     const totalWins = window.localStorage.getItem("totalWins");
-//     const currentStreak = window.localStorage.getItem("currentStreak");
-//     const longestStreak = window.localStorage.getItem("longestStreak");
-//     const winPercentage = Math.round((totalWins / totalGames) * 100);
-//   }
   
 function createStats(modalMid) {
     const totalGames = window.localStorage.getItem("totalGames") || 0;
     const totalWins = window.localStorage.getItem("totalWins") || 0;
     const currentStreak = window.localStorage.getItem("currentStreak") || 0;
     const longestStreak = window.localStorage.getItem("longestStreak") || 0;
-
-    // if(!totalGames) window.localStorage.setItem("totalGames", 0);
-    // if(!totalWins) window.localStorage.setItem("totalWins", 0);
-    // if(!currentStreak) window.localStorage.setItem("currentStreak", 0);
-    // if(!longestStreak) window.localStorage.setItem("longestStreak", 0);
 
     const winPercentage = Math.round((totalWins / totalGames) * 100) || 0;
     const modalMidTitle = document.createElement('h2');
@@ -208,7 +176,7 @@ function createStats(modalMid) {
     if(!gameIsActive)
     {
         const modalMidSubtitle = document.createElement('h5');
-        if(chosenWord === word) modalMidSubtitle.innerHTML = `Grattis, du klarade dagens spel på ${mapGuesses[currentGuess]} försök!`;
+        if(solutionWord === word) modalMidSubtitle.innerHTML = `Grattis, du klarade dagens spel på ${mapGuesses[currentGuess]} försök!`;
         else modalMidSubtitle.innerHTML = "Du klarade tyvärr inte dagens spel. Försök igen imorgon!";
         modalMid.append(modalMidSubtitle);
     }
