@@ -134,8 +134,8 @@ function createShareButton(modalMid) {
     modalMid.append(shareButton);
 }
 
-function shareResult(modalMid) {
-    let result = `Ordly #gameId - ${currentGuess}/${numberOfGuesses}`;
+async function shareResult(modalMid) {
+    let result = `Ordly.se #${await apiFetchId()} - ${currentGuess}/${numberOfGuesses}`;
 
     for (let i = 0; i < guessedWords.length; i++) {
         result += "\n"

@@ -147,6 +147,7 @@ header span {
   display: flex;
   justify-content: center;
   max-width: 320px;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -784,4 +785,20 @@ header input:checked + .slider:before {
 
 .tile, .keys button, .slider {
   box-shadow: 2px 3px 4px rgba(0, 0, 0, .5);
+}
+
+.prtsc {
+  order: -1;
+  margin: 1rem;
+  width: 100%;
+  text-align: left;
+  font-size: 24px;
+}
+
+.prtsc div {
+  padding: .5rem;
+}
+
+.prtsc div:last-child {
+  font-size: 16px;
 }

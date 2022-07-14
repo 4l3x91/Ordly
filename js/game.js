@@ -9,6 +9,14 @@ async function apiFetch() {
   const json = await response.json();
   return json[0].name;
 }
+
+async function apiFetchId()
+{
+  let response = await fetch("http://192.168.0.38:7083/api/v1/Ordly");
+  const json = await response.json();
+  return json[0].wordId;
+}
+
 async function checkLatestUser() {
   let response = await fetch("http://192.168.0.38:7083/api/v1/User/latestUser");
   const json = await response.json();
