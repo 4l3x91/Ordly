@@ -777,3 +777,11 @@ header input:checked + .slider:before {
   -ms-transform: translateX(26px);
   transform: translateX(26px);
 }
+
+.hide {
+  display: none !important;
+}
+
+.tile, .keys button, .slider {
+  box-shadow: 2px 3px 4px rgba(0, 0, 0, .5);
+}
