@@ -97,10 +97,22 @@ function createGuessingStats(modalMid) {
 
         const guessingResult = document.createElement('div');
         guessingResult.classList.add("guess-counter");
-        guessingResult.innerHTML = "0";
+
+        const stats = JSON.parse(localStorage.getItem("stats"));
+
+        for (let y = 0; y < stats.previousGames.length; y++) {
+            if(index < stats.previousGames.length)
+            {
+                guessingResult.innerHTML = stats.previousGames[y].guesses;
+                console.log(stats.previousGames[y].guesses);
+            }
+            else guessingResult.innerHTML = "0";
+        }   
+        
         guessingNumberContainer.append(guessingResult);
 
         numberOfTriesContent.append(guessingNumberContainer);
+
     }
     numberOfTriesContainer.append(numberOfTriesContent);
 

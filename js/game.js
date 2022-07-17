@@ -70,17 +70,14 @@ async function initFetch() {
         console.log(stats)
       }
       prevGames = stats.previousGames;
-      console.log(prevGames)
       gameID = await apiFetchId();
-      for (let index = 0; index < prevGames.length; index++) {
-        if(prevGames[index].gameID === gameID)
-        {
-          gameIsActive = false;
-          endGameStyling();
-        }
-      }
-      // if(prevGames.includes(gameID)) console.log("Match")
-      // console.log("Init total games: " + stats.totalGames)
+      // for (let index = 0; index < prevGames.length; index++) {
+      //   if(prevGames[index].gameID === gameID)
+      //   {
+      //     gameIsActive = false;
+      //     endGameStyling();
+      //   }
+      // }
   }
 
   if (gameIsActive) {
