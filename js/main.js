@@ -6,8 +6,8 @@ async function main() {
   spawnGrid();
   createKeyboard();
   createSplitKeyboard();
-  gameLoop();
   await initFetch();
+  await gameLoop();
 
   if (!hasVisited) {
     openInfo();

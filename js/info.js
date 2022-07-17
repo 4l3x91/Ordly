@@ -111,7 +111,7 @@ function createInfo() {
   const infoCorrectLetter = document.createElement("span");
   const infoCorrectLetterBox = document.createElement("span");
   infoCorrectLetterBox.classList.add("right");
-  infoCorrectLetterBox.innerHTML = "Grön";
+
   infoCorrectLetter.innerHTML =
     "ruta betyder att bokstaven finns i ordet och är på rätt plats.";
   infoCorrectContainer.append(infoCorrectLetterBox, infoCorrectLetter);
@@ -120,7 +120,6 @@ function createInfo() {
   const infoKindaLetter = document.createElement("span");
   const infoKindaLetterBox = document.createElement("span");
   infoKindaLetterBox.classList.add("kinda");
-  infoKindaLetterBox.innerHTML = "Orange";
   infoKindaLetter.innerHTML =
     "ruta betyder att bokstaven finns i ordet men är på fel plats.";
   infoKindaContainer.append(infoKindaLetterBox, infoKindaLetter);
@@ -129,7 +128,6 @@ function createInfo() {
   const infoWrongLetter = document.createElement("span");
   const infoWrongLetterBox = document.createElement("span");
   infoWrongLetterBox.classList.add("wrong");
-  infoWrongLetterBox.innerHTML = "Mörkgrå";
   infoWrongLetter.innerHTML = "ruta betyder att bokstaven inte finns i ordet.";
   infoWrongContainer.append(infoWrongLetterBox, infoWrongLetter);
 

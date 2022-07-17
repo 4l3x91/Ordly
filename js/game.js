@@ -3,100 +3,87 @@ let currentGuess = 0;
 let word = "";
 let gameIsActive = true;
 let guessedWords = [];
+let prevGames = [];
 
 async function apiFetch() {
-  let response = await fetch("http://192.168.0.38:7083/api/v1/Ordly");
+  let response = await fetch("https://ordlybackend20220713231604.azurewebsites.net/api/v1/ordly");
   const json = await response.json();
-  return json[0].name;
-}
-
-async function apiFetchId()
-{
-  let response = await fetch("http://192.168.0.38:7083/api/v1/Ordly");
-  const json = await response.json();
-  return json[0].wordId;
-}
-
-async function checkLatestUser() {
-  let response = await fetch("http://192.168.0.38:7083/api/v1/User/latestUser");
-  const json = await response.json();
-  return json.userId;
-}
-
-async function postUserScore(user) {
-  await fetch("http://192.168.0.38:7083/api/v1/User", {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      userId: `${user}`,
-      totalGames: window.localStorage.getItem("totalGames").toString(),
-      totalWins: window.localStorage.getItem("totalWins").toString(),
-      currentStreak: window.localStorage.getItem("currentStreak").toString(),
-      longestStreak: window.localStorage.getItem("longestStreak").toString(),
-    }),
-  })
-    .then((result) => {
-      console.log("Completed with result:", result);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-}
-
-async function fetchUser(userId) {
-  let response = await fetch(`http://192.168.0.38:7083/api/v1/User/${userId}`);
-  const json = await response.json();
+  console.log(json)
   return json;
 }
 
-async function mapUser(userId) {
-  await postUserScore(userId);
+// del
+async function apiFetchId() {
+  let response = await fetch("https://ordlybackend20220713231604.azurewebsites.net/api/v1/ordly");
+  const json = await response.json();
+  return json.dailyGameId;
 }
 
 async function initFetch() {
-  solutionWord = await apiFetch();
-  let userId = window.localStorage.getItem("userId");
-
-  if (!userId) {
-    latestUser = await checkLatestUser();
-    window.localStorage.setItem("userId", Number(latestUser) + 1);
-    latestUser = window.localStorage.getItem("userId");
-    window.localStorage.setItem("totalGames", 0),
-    window.localStorage.setItem("totalWins", 0),
-    window.localStorage.setItem("currentStreak", 0),
-    window.localStorage.setItem("longestStreak", 0),
-    await postUserScore(Number(latestUser));
-  } else {
-    getUser = JSON.parse(localStorage.getItem("userId"));
+  const GetDailyGame = await apiFetch();
+  solutionWord = GetDailyGame.word;
+  solutionId = GetDailyGame.dailyGameId;
   }
 
-  let guessedWords = JSON.parse(localStorage.getItem("guesses"));
-  if (!guessedWords) {
-    guessedWords = [];
-  }
-}
+  async function addPrevGame() {
+    const prevGame = {
+      gameID: await apiFetchId(),
+      guesses: currentGuess
+    }
 
-  function gameLoop() {
+    prevGames.push(prevGame);
+    console.log(prevGames);
+
+    stats = JSON.parse(localStorage.getItem("stats"));
+    const setStats = {
+      totalGames: stats.totalGames.toString(),
+      totalWins: stats.totalWins.toString(),
+      currentStreak: stats.currentStreak.toString(),
+      longestStreak: stats.longestStreak.toString(),
+      previousGames: prevGames
+    }
+    localStorage.setItem("stats", JSON.stringify(setStats));
+  }
+  async function gameLoop() {
     if (gameIsActive) {
       checkInput();
       word = localStorage.getItem("currentWordGuess") || '';
       renderCurrentGuess();
-      gameState(gameIsActive);
+      await initLocalStorage();
     }
   }
 
-  function gameState(gameIsActive) {
-    return gameIsActive;
+  async function initLocalStorage() {
+
+    let stats = JSON.parse(localStorage.getItem("stats"));
+      if (!stats) {
+        prevGames = [];
+        const initStats = {
+          totalGames: 0,
+          totalWins: 0,
+          currentStreak: 0,
+          longestStreak: 0,
+          previousGames: prevGames
+        }
+        localStorage.setItem("stats", JSON.stringify(initStats));
+        stats = JSON.parse(localStorage.getItem("stats"));
+        console.log(stats)
+      }
+      prevGames = stats.previousGames;
+      console.log(prevGames)
+      gameID = await apiFetchId();
+      for (let index = 0; index < prevGames.length; index++) {
+        if(prevGames[index].gameID === gameID)
+        {
+          gameIsActive = false;
+          endGameStyling();
+        }
+      }
+      // if(prevGames.includes(gameID)) console.log("Match")
+      // console.log("Init total games: " + stats.totalGames)
   }
 
-  function getRandomWord() {
-    const randomNumber = Math.floor(Math.random() * words.length);
-    return words[randomNumber];
-  }
-
-  if (gameState) {
+  if (gameIsActive) {
     document.addEventListener("keydown", keyPressed);
     function keyPressed(e) {
       if (!locked) {
@@ -211,18 +198,6 @@ async function initFetch() {
     }
   }
 
-  function updateStats() {
-    const userId = window.localStorage.getItem("userId");
-    const totalWins = window.localStorage.getItem("totalWins");
-    const currentStreak = window.localStorage.getItem("currentStreak");
-    const longestStreak = window.localStorage.getItem("longestStreak");
-    window.localStorage.setItem("totalWins", Number(totalWins) + 1);
-    window.localStorage.setItem("currentStreak", Number(currentStreak) + 1);
-    if (currentStreak > longestStreak)
-      window.localStorage.setItem("longestStreak", Number(currentStreak) + 1);
-    postUserScore(userId);
-  }
-
   function winningAnimation() {
     for (let index = 0; index < word.length; index++) {
       const grid = document.querySelector(".grid");
@@ -242,13 +217,13 @@ async function initFetch() {
     guessedWords.push(guess);
     currentGuess++;
     window.localStorage.setItem("guesses", JSON.stringify(guessedWords));
-    // renderAllGuesses();
   }
 
   function endGame() {
-    const totalGames = window.localStorage.getItem("totalGames");
-    window.localStorage.setItem("totalGames", Number(totalGames) + 1);
-    updateStats();
+    // const stats = JSON.parse(localStorage.getItem("stats"));
+    // console.log("Total games: " + stats.totalGames);
+    // localStorage.setItem("stats.totalGames", Number(stats.totalGames) + 1);
+    addPrevGame();
     gameIsActive = false;
     setTimeout(() => {
       openForm();

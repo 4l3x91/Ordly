@@ -41,7 +41,6 @@ function checkInput() {
             break;
         }
     }
-    gameState(gameIsActive);
 }
 
 function renderLetter(grid, index, span, newIndex) {
