@@ -173,6 +173,7 @@ section {
   max-height: 400px;
   position: relative;
   max-width: 98vw;
+  min-width: 50%;
 }
 
 .input {
@@ -336,6 +337,10 @@ section {
     aspect-ratio: auto;
     flex-grow: 0;
     gap: 1.5rem;
+  }
+
+  .container .grid {
+    margin: 0 20px
   }
 
   .tile {
