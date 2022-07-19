@@ -17,8 +17,9 @@ function createBar() {
     for (let index = 0; index < 7; index++) {       
         for (let y = 0; y < stats.previousGames.length; y++) {
         if(index + 1 === stats.previousGames[y].guesses) counter++;
+        if(index + 1 === 7 && stats.previousGames[y].guesses === "X") counter++;
     }   
-    if(index + 1 == 7) items.push({name: "X", value: counter, color: colors[index]});
+    if(index + 1 === 7) items.push({name: "X", value: counter, color: colors[index]});
     else items.push({name: `${index + 1}`, value: counter, color: colors[index]});
     counter = 0;
 }

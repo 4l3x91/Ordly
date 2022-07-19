@@ -26,14 +26,24 @@ async function initFetch() {
   }
 
   async function addPrevGame() {
-    const prevGame = {
-      gameID: await apiFetchId(),
-      guesses: currentGuess
+    let prevGame;
+    if(word === solutionWord)
+    {
+      prevGame = {
+        gameID: await apiFetchId(),
+        guesses: currentGuess
+      }
+    }
+    else
+    {
+      prevGame = {
+        gameID: await apiFetchId(),
+        guesses: "X"
+      }
     }
 
     prevGames.push(prevGame);
-    console.log(prevGames);
-
+    
     stats = JSON.parse(localStorage.getItem("stats"));
     const setStats = {
       totalGames: stats.totalGames.toString(),
