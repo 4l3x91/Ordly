@@ -2,23 +2,23 @@
 <html data-theme="dark-mode" lang="en">
 
 <head>
-
-    <meta name="google-signin-scope" content="profile email">
-    <meta name="google-signin-client_id" content="434653155285-s8h8bim5oomgvhrvmhsdh5rk52s2uh5p.apps.googleusercontent.com">
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <!-- <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="434653155285-s8h8bim5oomgvhrvmhsdh5rk52s2uh5p.apps.googleusercontent.com"> -->
+    <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
 
 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="css/liner-bar.css">
     <link rel="stylesheet" href="css/mobile.css">
     <link rel="stylesheet" href="css/colormode.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400&display=swap" rel="stylesheet"> 
-
+    <script src="js/liner-bar.js"></script>
     <script defer src="js/info.js"></script>
     <script defer src="js/stats.js"></script>
     <script defer src="js/keyboard.js"></script>
@@ -58,7 +58,7 @@
                 </div>
             </header>
             <main>
-                <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+                <!-- <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div> -->
 
                 <section class="play--area">
                     <div class="container">
@@ -73,7 +73,7 @@
             </main>
         </div>
     </div>
-    <script>
+    <!-- <script>
         function onSignIn(googleUser) {
           // Useful data for your client-side scripts:
           var profile = googleUser.getBasicProfile();
@@ -88,8 +88,7 @@
           var id_token = googleUser.getAuthResponse().id_token;
           console.log("ID Token: " + id_token);
         }
-      </script>
-  
+      </script> -->
 </body>
 
 </html>

@@ -1,5 +1,6 @@
 function openForm() {
     createForm();
+    createBar();
     const modalContainer = document.querySelector(".modal-content");
     modalContainer.addEventListener("click", (e) => {
         if(e.target === modalContainer)
@@ -7,11 +8,31 @@ function openForm() {
     })
 }
 
+function createBar() {
+    const items = [];
+    const colors = ["gold", "silver", "orange", "#6a649f", "#6a329f", "#738899", "red"
+    ]
+    const stats = JSON.parse(localStorage.getItem('stats')); 
+    let counter = 0;
+    for (let index = 0; index < 7; index++) {       
+        for (let y = 0; y < stats.previousGames.length; y++) {
+        if(index + 1 === stats.previousGames[y].guesses) counter++;
+    }   
+    if(index + 1 == 7) items.push({name: "X", value: counter, color: colors[index]});
+    else items.push({name: `${index + 1}`, value: counter, color: colors[index]});
+    counter = 0;
+}
+    const lb = new LinerBar("#liner-bar", {
+        title: "Dina spelade omgångar",
+        dark:  true,
+        items: items
+    });
+    lb.render();
+}
+
 function closeForm() {
     const removeForm = document.querySelector(".modal-wrapper");
     removeForm.remove();
-
-
 }
 
 function createForm() {
@@ -71,53 +92,14 @@ function createMidModal() {
 }
 
 function createGuessingStats(modalMid) {
-    const numberOfTriesContainer = document.createElement('div');
-    numberOfTriesContainer.classList.add("stats-guess-container");
-
-    const numberOfTriesTitle = document.createElement('h4');
-    numberOfTriesTitle.innerHTML = "Antal försök";
-    numberOfTriesContainer.append(numberOfTriesTitle);
-
-    const numberOfTriesContent = document.createElement('div');
-    numberOfTriesContent.classList.add("stats-guess-content");
-
-    for (let index = 0; index < numberOfGuesses; index++) {
-        const guessingNumberContainer = document.createElement('div');
-        guessingNumberContainer.classList.add("stats-guess");
-
-        const guessingNumber = document.createElement('div');
-        guessingNumber.classList.add("guess-index");
-        guessingNumber.innerHTML = index + 1;
-        guessingNumberContainer.append(guessingNumber);
-
-        const guessingBar = document.createElement('div');
-        guessingBar.classList.add("guess-bar");
-        guessingBar.innerHTML = "---";
-        guessingNumberContainer.append(guessingBar);
-
-        const guessingResult = document.createElement('div');
-        guessingResult.classList.add("guess-counter");
-
-        const stats = JSON.parse(localStorage.getItem("stats"));
-
-        for (let y = 0; y < stats.previousGames.length; y++) {
-            if(index < stats.previousGames.length)
-            {
-                guessingResult.innerHTML = stats.previousGames[y].guesses;
-                console.log(stats.previousGames[y].guesses);
-            }
-            else guessingResult.innerHTML = "0";
-        }   
-        
-        guessingNumberContainer.append(guessingResult);
-
-        numberOfTriesContent.append(guessingNumberContainer);
-
-    }
-    numberOfTriesContainer.append(numberOfTriesContent);
-
-    modalMid.append(numberOfTriesContainer);
+  const linerContainer = document.createElement('div');
+  linerContainer.classList.add("liner-container");
+  const linerBar = document.createElement('div');
+  linerBar.id = "liner-bar";
+  modalMid.append(linerContainer);
+  linerContainer.append(linerBar);
 }
+
 
 function createCorrectWord(modalMid) {
     if(solutionWord !== word)

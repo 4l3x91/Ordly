@@ -71,13 +71,13 @@ async function initFetch() {
       }
       prevGames = stats.previousGames;
       gameID = await apiFetchId();
-      // for (let index = 0; index < prevGames.length; index++) {
-      //   if(prevGames[index].gameID === gameID)
-      //   {
-      //     gameIsActive = false;
-      //     endGameStyling();
-      //   }
-      // }
+      for (let index = 0; index < prevGames.length; index++) {
+        if(prevGames[index].gameID === gameID)
+        {
+          gameIsActive = false;
+          endGameStyling();
+        }
+      }
   }
 
   if (gameIsActive) {
@@ -217,9 +217,6 @@ async function initFetch() {
   }
 
   function endGame() {
-    // const stats = JSON.parse(localStorage.getItem("stats"));
-    // console.log("Total games: " + stats.totalGames);
-    // localStorage.setItem("stats.totalGames", Number(stats.totalGames) + 1);
     addPrevGame();
     gameIsActive = false;
     setTimeout(() => {
