@@ -820,7 +820,7 @@ header input:checked + .slider:before {
 .slider,
 .example-tile,
 .play-button,
-.example-grid-container {
+.example-grid-container, .rank-bar-container {
   box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.5);
 }
 
@@ -838,4 +838,55 @@ header input:checked + .slider:before {
 
 .prtsc div:last-child {
   font-size: 16px;
+}
+
+
+.rank-container {
+  display: flex;
+  align-items: center;
+  padding: 0 !important;
+}
+
+.rank-image-container {
+  display: flex;
+  padding-right: 0px !important;
+}
+
+.rank-info-container {
+  width: 100%;
+}
+
+.rank-text {
+  font-size: 16px;
+  padding: 0 !important;
+}
+
+.rank-bar-container {
+  border: 1px solid var(--background-color-variant);
+  border-radius: .3rem;
+  padding: 0 !important;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.rank-bar-progress {
+  position: absolute;
+  z-index: 100;
+  width: 100%;
+  text-align: center;
+  top: 0;
+  line-height: 16px;
+}
+
+.rank-bar-fill {
+  font-size: 14px !important;
+  padding: 0 !important;
+  width: 80%;
+  background: var(--background-color-right);
+  height: 16px;
+  text-align: center;
+  position: relative;
 }

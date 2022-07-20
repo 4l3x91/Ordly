@@ -28,12 +28,43 @@ async function screenShotMode() {
       const screenModeContainer = document.createElement("div");
       screenModeContainer.classList.add("prtsc");
       const screenModeContentTop = document.createElement("div");
+      
+      const screenModeContentMiddle = document.createElement("div");
+      screenModeContentMiddle.classList.add("rank-container");
+
       const screenModeContentBottom = document.createElement("div");
       screenModeContentTop.innerHTML += `Ordly.se #${await apiFetchId()} - ${currentGuess}/${numberOfGuesses}`;
+
+      const rankImageContainer = document.createElement('div');
+      rankImageContainer.classList.add("rank-image-container");
+      const rankImage = document.createElement('img');
+      rankImage.src = 'https://static.wikia.nocookie.net/leagueoflegends/images/e/ec/Season_2019_-_Diamond_4.png';
+      rankImage.style.width = '60px';
+      rankImageContainer.append(rankImage);
+
+      const rankBarContainer = document.createElement('div');
+      rankBarContainer.classList.add("rank-info-container");
+
+      const rankText = document.createElement('div');
+      rankText.innerHTML = 'Platinum';
+      rankText.classList.add('rank-text');
+
+      const rankBar = document.createElement('div');
+      rankBar.classList.add('rank-bar-container');
+      const rankBarText = document.createElement('span');
+      rankBarText.classList.add('rank-bar-progress');
+      rankBarText.innerHTML = '1200/1500';
+      const rankbarFill = document.createElement('div');
+      rankbarFill.classList.add("rank-bar-fill");
+
+      rankBar.append(rankBarText, rankbarFill);
+      rankBarContainer.append(rankText, rankBar);
+
+      screenModeContentMiddle.append(rankImageContainer, rankBarContainer);
+
       screenModeContentBottom.innerHTML = `${currentDate}`;
       container.append(screenModeContainer);
-      screenModeContainer.append(screenModeContentTop);
-      screenModeContainer.append(screenModeContentBottom);
+      screenModeContainer.append(screenModeContentTop, screenModeContentMiddle, screenModeContentBottom);
     }
   }
 }
