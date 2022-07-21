@@ -226,6 +226,7 @@ section {
 
 .modal-wrapper {
   position: fixed;
+  z-index: 2;
 }
 
 .modal-wrapper,
@@ -874,7 +875,7 @@ header input:checked + .slider:before {
 
 .rank-bar-progress {
   position: absolute;
-  z-index: 100;
+  z-index: 1;
   width: 100%;
   text-align: center;
   top: 0;
