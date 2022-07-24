@@ -4,6 +4,7 @@ let word = "";
 let gameIsActive = true;
 let guessedWords = [];
 let prevGames = [];
+let guessResult = "";
 
 async function apiFetch() {
   let response = await fetch("https://ordlybackend20220713231604.azurewebsites.net/api/v1/ordly");
@@ -23,6 +24,26 @@ async function initFetch() {
   const GetDailyGame = await apiFetch();
   solutionWord = GetDailyGame.word;
   solutionId = GetDailyGame.dailyGameId;
+  }
+
+  async function postGuess() {
+    let response;
+    await fetch("https://ordlybackend20220713231604.azurewebsites.net/api/v1/Ordly/Guess", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        guess: word
+      }),
+    })
+    .then(result => {
+      response = result.json();
+    })
+      .catch((err) => {
+        console.error(err);
+      });
+      return response;
   }
 
   async function addPrevGame() {
@@ -96,11 +117,7 @@ async function initFetch() {
       if (!locked) {
         const character = e.key;
         if (keys.includes(character)) buildWord(character);
-        if (
-          (word.length == 5 && character == " ") ||
-          (character == "Enter" && word.length == 5)
-        )
-          lock();
+        if ((word.length == 5 && character == " ") || (character == "Enter" && word.length == 5)) lock();
         if (word.length > 0 && character == "Backspace") backspaceKey();
         window.localStorage.setItem("currentWordGuess", word);
       }
@@ -114,20 +131,12 @@ async function initFetch() {
       const character = e.target.innerHTML;
       const clickedCharacter = e.target;
       const backspaceDivs = [];
-      backspaceDivs.push(
-        backspaceIcon,
-        backspaceIconTwo,
-        backspace,
-        backspaceSplit
-      );
+      backspaceDivs.push(backspaceIcon, backspaceIconTwo, backspace, backspaceSplit);
 
       const play = document.querySelector(".play");
 
       if (keys.includes(character)) buildWord(character);
-
-      if (backspaceDivs.includes(clickedCharacter) && word.length > 0)
-        backspaceKey();
-
+      if (backspaceDivs.includes(clickedCharacter) && word.length > 0) backspaceKey();
       if (clickedCharacter === play && word.length == 5) lock();
     });
   }
@@ -136,8 +145,8 @@ async function initFetch() {
   function lock() {
     if (!locked) {
       locked = true;
-      setTimeout(() => {
-        checkAnswer();
+      setTimeout(async () => {
+        await checkAnswer();
       }, 10);
     }
   }
@@ -170,39 +179,19 @@ async function initFetch() {
     }
   }
 
-  function checkWordExists() {
-    if (words.includes(word)) return true;
-    else return false;
-  }
-
-  function checkAnswer() {
-    if (!checkWordExists()) {
-      for (let index = 0; index < word.length; index++) {
-        const grid = document.querySelector(".grid");
-        const selectedTile = grid.children[currentGuess * 5 + index];
-        setTimeout(() => {
-          selectedTile.classList.add("faulty");
-        }, 10 * index);
-        setTimeout(() => {
-          selectedTile.classList.remove("faulty");
-        }, 500);
-        locked = false;
-      }
-      alertWordDoesNotExist();
-    }
-    if (gameIsActive && checkWordExists()) {
-      checkRightWord();
-
-      addGuess();
-
+  function wordDoesNotExist() {
+    for (let index = 0; index < word.length; index++) {
+      const grid = document.querySelector(".grid");
+      const selectedTile = grid.children[currentGuess * 5 + index];
       setTimeout(() => {
-        if (solutionWord === word) {
-          winningAnimation();
-          endGame();
-        } else wrongAnswer();
-        locked = false;
-      }, 1000);
+        selectedTile.classList.add("faulty");
+      }, 10 * index);
+      setTimeout(() => {
+        selectedTile.classList.remove("faulty");
+      }, 500);
+      locked = false;
     }
+    alertWordDoesNotExist();
   }
 
   function winningAnimation() {
@@ -267,25 +256,29 @@ async function initFetch() {
     }
   }
 
-  function checkRightWord() {
-    let remainingLetters = solutionWord;
-
-    for (let i = 0; i < word.length; i++) {
-      if (word[i] === solutionWord[i]) {
-        remainingLetters = remainingLetters.replace(word[i], "");
-        renderAnswer(word[i], i, "right");
-      } else if (!solutionWord.includes(word[i])) {
-        renderAnswer(word[i], i, "wrong");
-      }
+ async function checkAnswer() {
+  try
+  {
+    let result = await postGuess();
+    for (let index = 0; index < word.length; index++) {
+      if(result.result[index] === 2) renderAnswer(word[index], index, "right")
+      if(result.result[index] === 1) renderAnswer(word[index], index, "kinda")
+      if(result.result[index] === 0) renderAnswer(word[index], index, "wrong")
     }
-
-    for (let i = 0; i < word.length; i++) {
-      if (remainingLetters.includes(word[i]) && word[i] !== solutionWord[i]) {
-        remainingLetters = remainingLetters.replace(word[i], "");
-        renderAnswer(word[i], i, "kinda");
-      }
-    }
+    addGuess();
+    setTimeout(() => {
+      // TODO result.isCompleted instead of solutionWord
+      if (solutionWord === word) {
+        winningAnimation();
+        endGame();
+      } else wrongAnswer();
+      locked = false;
+    }, 1000);
   }
+  catch {
+    wordDoesNotExist();
+  }
+}
 
   function updateGame(tile) {
     setCursor(tile);
