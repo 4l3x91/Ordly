@@ -28,7 +28,7 @@ async function initFetch() {
 
   async function postGuess() {
     let response;
-    await fetch("https://ordlybackend20220713231604.azurewebsites.net/api/v1/Ordly/Guess", {
+    await fetch("https://ordlybackend20220713231604.azurewebsites.net/api/v2/Ordly/Guess", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -267,8 +267,7 @@ async function initFetch() {
     }
     addGuess();
     setTimeout(() => {
-      // TODO result.isCompleted instead of solutionWord
-      if (solutionWord === word) {
+      if (result.isCompleted) {
         winningAnimation();
         endGame();
       } else wrongAnswer();

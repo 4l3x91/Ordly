@@ -1,3 +1,5 @@
+
+    
 function openForm() {
     createForm();
     createBar();
@@ -45,7 +47,10 @@ function createForm() {
 
     const modalBottom = createBottomModal();
 
+    
     formModal.append(modalTop, modalMid, modalBottom);
+
+    getTime();
 
     const formOverlay = createModalOverlay();
     formContainer.append(formOverlay);
@@ -260,4 +265,29 @@ function createModalOverlay() {
     const formOverlay = document.createElement('div');
     formOverlay.classList.add("modal-overlay");
     return formOverlay;
+}
+
+function getTime() {
+    const parent = document.querySelector(".modal-inner-mid");
+    const timeContainer = document.createElement('div');
+    timeContainer.classList.add("timer-container");
+
+    const timeHeader = document.createElement('p');
+    timeHeader.classList.add("timer-header");
+    timeHeader.innerHTML = "Nästa spel släpps om";
+    
+    const timeValue = document.createElement('div');
+    timeValue.classList.add("timer-value");
+    let remainingTime;
+    var nextDay = new Date();
+    nextDay.setHours(24,0,0,0);
+    setInterval(() => {
+        currentTime = serverTime.getTime();
+        goalTime = nextDay.getTime();
+        remainingTime = goalTime - currentTime;
+        var convertedRemainingTime = new Date(remainingTime).toISOString().slice(11, - 5);
+        timeValue.innerHTML = convertedRemainingTime;
+    }, 500);
+    timeContainer.append(timeHeader, timeValue);
+    parent.append(timeContainer);
 }
