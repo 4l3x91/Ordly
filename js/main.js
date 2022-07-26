@@ -10,12 +10,6 @@ async function fetchTime() {
 }
 
 async function main() {
-  let apiTime = await fetchTime();
-  serverTime = new Date(apiTime);
-    setInterval(() => {
-      serverTime.setMilliseconds(serverTime.getMilliseconds() + 500);
-    }, 500);
-
     // TODO: Move to localStorage
     if (!hasVisited) {
       openInfo();
@@ -27,4 +21,9 @@ async function main() {
   createSplitKeyboard();
   await initFetch();
   await gameLoop();
+  let apiTime = await fetchTime();
+  serverTime = new Date(apiTime);
+    setInterval(() => {
+      serverTime.setMilliseconds(serverTime.getMilliseconds() + 500);
+    }, 500);
 }
