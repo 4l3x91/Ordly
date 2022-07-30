@@ -1,20 +1,21 @@
 document.addEventListener("DOMContentLoaded", main);
-var hasVisited = sessionStorage.getItem("ordly.se");
+let hasVisited = JSON.parse(localStorage.getItem("hasVisited"));
 let serverTime;
 
 async function fetchTime() {
-  return await fetch('https://ordlybackend20220713231604.azurewebsites.net/api/v1/Ordly/currentTime')
-  .then(async resp => {
-     return await resp.json();
+  return await fetch(
+    "https://ordlybackend20220713231604.azurewebsites.net/api/v1/Ordly/currentTime"
+  ).then(async (resp) => {
+    return await resp.json();
   });
 }
 
 async function main() {
-    // TODO: Move to localStorage
-    if (!hasVisited) {
-      openInfo();
-    sessionStorage.setItem("ordly.se", true);
+  if (!hasVisited) {
+    openInfo();
+    localStorage.setItem("hasVisited", true);
   }
+
   initColorMode();
   spawnGrid();
   createKeyboard();
@@ -23,7 +24,7 @@ async function main() {
   await gameLoop();
   let apiTime = await fetchTime();
   serverTime = new Date(apiTime);
-    setInterval(() => {
-      serverTime.setMilliseconds(serverTime.getMilliseconds() + 500);
-    }, 500);
+  setInterval(() => {
+    serverTime.setMilliseconds(serverTime.getMilliseconds() + 500);
+  }, 500);
 }
