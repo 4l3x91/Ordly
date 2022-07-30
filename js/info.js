@@ -75,12 +75,13 @@ function createInfo() {
   infoGridTitle.innerHTML = "Exempel";
   gridContainer.append(infoGridTitle);
 
-  const exampleWordOne = "PROVA";
+  const exampleWordOne = "SPELA";
 
   for (let index = 0; index < exampleWordOne.length; index++) {
     const infoTile = document.createElement("div");
     infoTile.classList.add("example-tile");
-    if (index == 0 || index == 4) infoTile.classList.add("right");
+    if (index == 0 || index == 3) infoTile.classList.add("right");
+    else if (index == 4) infoTile.classList.add("kinda");
     else infoTile.classList.add("wrong");
     const infoTileContent = document.createElement("span");
     infoTileContent.innerHTML = exampleWordOne[index];
@@ -88,13 +89,13 @@ function createInfo() {
     infoTileContainer.append(infoTile);
   }
 
-  const exampleWordTwo = "TESTA";
+  const exampleWordTwo = "SMART";
 
   for (let index = 0; index < exampleWordTwo.length; index++) {
     const infoTile = document.createElement("div");
     infoTile.classList.add("example-tile");
-    if (index == 2) infoTile.classList.add("kinda");
-    else if (index == 3) infoTile.classList.add("right");
+    if (index == 0 || index == 2) infoTile.classList.add("right");
+    // else if (index == 3) infoTile.classList.add("right");
     else infoTile.classList.add("wrong");
     const infoTileContent = document.createElement("span");
     infoTileContent.innerHTML = exampleWordTwo[index];
@@ -113,7 +114,7 @@ function createInfo() {
   infoCorrectLetterBox.classList.add("right");
 
   infoCorrectLetter.innerHTML =
-    " betyder att bokstaven finns i ordet och är på rätt plats.";
+    " bokstaven finns i ordet och är på rätt plats.";
   infoCorrectContainer.append(infoCorrectLetterBox, infoCorrectLetter);
 
   const infoKindaContainer = document.createElement("div");
@@ -121,14 +122,14 @@ function createInfo() {
   const infoKindaLetterBox = document.createElement("span");
   infoKindaLetterBox.classList.add("kinda");
   infoKindaLetter.innerHTML =
-    " betyder att bokstaven finns i ordet men är på fel plats.";
+    " bokstaven finns i ordet men är på fel plats.";
   infoKindaContainer.append(infoKindaLetterBox, infoKindaLetter);
 
   const infoWrongContainer = document.createElement("div");
   const infoWrongLetter = document.createElement("span");
   const infoWrongLetterBox = document.createElement("span");
   infoWrongLetterBox.classList.add("wrong");
-  infoWrongLetter.innerHTML = " betyder att bokstaven inte finns i ordet.";
+  infoWrongLetter.innerHTML = " bokstaven finns inte i ordet.";
   infoWrongContainer.append(infoWrongLetterBox, infoWrongLetter);
 
   explainContainer.append(
