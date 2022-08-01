@@ -282,7 +282,6 @@ async function initFetch() {
   function updateGame(tile) {
     setCursor(tile);
   }
-
   function renderAnswer(character, index, classname) {
     const grid = document.querySelector(".grid");
     const selectedTile = grid.children[currentGuess * 5 + index];
@@ -294,15 +293,19 @@ async function initFetch() {
 
     for (let i = 0; i < keyboard.length; i++) {
       for (let y = 0; y < keyboard[i].children.length; y++) {
-        if (
-          character === keyboard[i].children[y].getAttribute("data-char") &&
-          !keyboard[i].children[y].classList.contains("right")
-        ) {
+        if (character === keyboard[i].children[y].getAttribute("data-char") && !keyboard[i].children[y].classList.contains("kinda") && !keyboard[i].children[y].classList.contains("right")) {
           setTimeout(() => {
             keyboard[i].children[y].className = classname;
             keyboard[i].children[y].classList.add("flip");
           }, 100 * index);
         }
+        else if (character === keyboard[i].children[y].getAttribute("data-char") && !keyboard[i].children[y].classList.contains("right")) {
+          setTimeout(() => {
+            keyboard[i].children[y].className = classname;
+            keyboard[i].children[y].classList.add("flip");
+          }, 100 * index);
+        }
+        keyboard[i].children[y].classList.remove("flip");
       }
     }
   }
