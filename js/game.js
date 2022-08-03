@@ -293,18 +293,22 @@ async function initFetch() {
 
     for (let i = 0; i < keyboard.length; i++) {
       for (let y = 0; y < keyboard[i].children.length; y++) {
-        if (character === keyboard[i].children[y].getAttribute("data-char") && !keyboard[i].children[y].classList.contains("kinda") && !keyboard[i].children[y].classList.contains("right")) {
-          setTimeout(() => {
-            keyboard[i].children[y].className = classname;
-            keyboard[i].children[y].classList.add("flip");
-          }, 100 * index);
+        if(character === keyboard[i].children[y].getAttribute("data-char") && classname == "right")
+        {
+          setTimeout(() => {keyboard[i].children[y].classList.add("flip")}, 100 * index)
+          keyboard[i].children[y].className = classname;
         }
-        else if (character === keyboard[i].children[y].getAttribute("data-char") && !keyboard[i].children[y].classList.contains("right")) {
-          setTimeout(() => {
-            keyboard[i].children[y].className = classname;
-            keyboard[i].children[y].classList.add("flip");
-          }, 100 * index);
+        else if(character === keyboard[i].children[y].getAttribute("data-char") && !keyboard[i].children[y].classList.contains("right") && classname == "kinda")
+        {
+          setTimeout(() => {keyboard[i].children[y].classList.add("flip")}, 100 * index)
+          keyboard[i].children[y].className = classname;
         }
+        else if(character === keyboard[i].children[y].getAttribute("data-char") && !keyboard[i].children[y].classList.contains("right") && !keyboard[i].children[y].classList.contains("kinda") && classname == "wrong")
+        {
+          setTimeout(() => {keyboard[i].children[y].classList.add("flip")}, 100 * index)
+          keyboard[i].children[y].className = classname;
+        }
+        
         keyboard[i].children[y].classList.remove("flip");
       }
     }
