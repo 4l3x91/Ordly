@@ -1,8 +1,6 @@
-
-    
 function openForm() {
     createForm();
-    createBar();
+    // createBar();
     const modalContainer = document.querySelector(".modal-content");
     modalContainer.addEventListener("click", (e) => {
         if(e.target === modalContainer)
@@ -10,28 +8,28 @@ function openForm() {
     })
 }
 
-function createBar() {
-    const items = [];
-    const colors = ["gold", "silver", "orange", "#6a649f", "#6a329f", "#738899", "red"
-    ]
-    const stats = JSON.parse(localStorage.getItem('stats')); 
-    let counter = 0;
-    for (let index = 0; index < 7; index++) {       
-        for (let y = 0; y < stats.previousGames.length; y++) {
-        if(index + 1 === stats.previousGames[y].guesses) counter++;
-        if(index + 1 === 7 && stats.previousGames[y].guesses === "X") counter++;
-    }   
-    if(index + 1 === 7) items.push({name: "X", value: counter, color: colors[index]});
-    else items.push({name: `${index + 1}`, value: counter, color: colors[index]});
-    counter = 0;
-}
-    const lb = new LinerBar("#liner-bar", {
-        title: "Dina spelade omgångar",
-        dark:  true,
-        items: items
-    });
-    lb.render();
-}
+// function createBar() {
+//     const items = [];
+//     const colors = ["gold", "silver", "orange", "#6a649f", "#6a329f", "#738899", "red"
+//     ]
+//     const stats = JSON.parse(localStorage.getItem('stats')); 
+//     let counter = 0;
+//     for (let index = 0; index < 7; index++) {       
+//         for (let y = 0; y < stats.previousGames.length; y++) {
+//         if(index + 1 === stats.previousGames[y].guesses) counter++;
+//         if(index + 1 === 7 && stats.previousGames[y].guesses === "X") counter++;
+//     }   
+//     if(index + 1 === 7) items.push({name: "X", value: counter, color: colors[index]});
+//     else items.push({name: `${index + 1}`, value: counter, color: colors[index]});
+//     counter = 0;
+// }
+//     const lb = new LinerBar("#liner-bar", {
+//         title: "Dina spelade omgångar",
+//         dark:  true,
+//         items: items
+//     });
+//     lb.render();
+// }
 
 function closeForm() {
     const removeForm = document.querySelector(".modal-wrapper");
@@ -89,7 +87,7 @@ function createMidModal() {
     modalMid.classList.add("modal-inner-mid");
 
     createStats(modalMid);
-    createGuessingStats(modalMid);
+    // createGuessingStats(modalMid);
 
     if(!gameIsActive) createShareButton(modalMid);
     if(!gameIsActive) createCorrectWord(modalMid);
@@ -108,19 +106,19 @@ function createGuessingStats(modalMid) {
 
 
 function createCorrectWord(modalMid) {
-    if(solutionWord !== word)
-    {
-        const correctWordContainer = document.createElement('div');
-        correctWordContainer.classList.add("correct-word");
-        const correctWord = document.createElement('h3');
-        correctWord.innerHTML = "Dagens rätta ord var: ";
-        const correctWordSpan = document.createElement('strong');
-        correctWordSpan.innerHTML = solutionWord;
+    // if(solutionWord !== word)
+    // {
+    //     const correctWordContainer = document.createElement('div');
+    //     correctWordContainer.classList.add("correct-word");
+    //     const correctWord = document.createElement('h3');
+    //     correctWord.innerHTML = "Dagens rätta ord var: ";
+    //     const correctWordSpan = document.createElement('strong');
+    //     correctWordSpan.innerHTML = solutionWord;
 
-        correctWordContainer.append(correctWord);
-        correctWord.append(correctWordSpan);
-        modalMid.append(correctWordContainer);
-    }
+    //     correctWordContainer.append(correctWord);
+    //     correctWord.append(correctWordSpan);
+    //     modalMid.append(correctWordContainer);
+    // }
 }
 
 function createShareButton(modalMid) {
@@ -135,16 +133,16 @@ function createShareButton(modalMid) {
 }
 
 async function shareResult(modalMid) {
-    let result = `Ordly.se #${await apiFetchId()} - ${currentGuess}/${numberOfGuesses}`;
+    let result = `Ordly.se #ChangeThis - ${currentGuess}/${numberOfGuesses}`;
 
-    for (let i = 0; i < guessedWords.length; i++) {
-        result += "\n"
-        for (let y = 0; y < guessedWords[i].word.length; y++) {
-            if(guessedWords[i].word[y] === solutionWord[y]) result += " 🟩";
-            else if(solutionWord.includes(guessedWords[i].word[y]) && guessedWords[i].word[y] !== solutionWord[y]) result += " 🟧";
-            else if(!solutionWord.includes(guessedWords[i].word[y])) result += " ⬛"
-        }   
-    }
+    // for (let i = 0; i < guessedWords.length; i++) {
+    //     result += "\n"
+    //     for (let y = 0; y < guessedWords[i].word.length; y++) {
+    //         if(guessedWords[i].word[y] === solutionWord[y]) result += " 🟩";
+    //         else if(solutionWord.includes(guessedWords[i].word[y]) && guessedWords[i].word[y] !== solutionWord[y]) result += " 🟧";
+    //         else if(!solutionWord.includes(guessedWords[i].word[y])) result += " ⬛"
+    //     }   
+    // }
 
     navigator.clipboard.writeText(result);
     const copyText = document.createElement('div');
@@ -176,8 +174,8 @@ function createStats(modalMid) {
     if(!gameIsActive)
     {
         const modalMidSubtitle = document.createElement('h5');
-        if(solutionWord === word) modalMidSubtitle.innerHTML = `Grattis, du klarade dagens spel på ${mapGuesses[currentGuess]} försök!`;
-        else modalMidSubtitle.innerHTML = "Du klarade tyvärr inte dagens spel. Försök igen imorgon!";
+        // if(solutionWord === word) modalMidSubtitle.innerHTML = `Grattis, du klarade dagens spel på ${mapGuesses[currentGuess]} försök!`;
+        // else modalMidSubtitle.innerHTML = "Du klarade tyvärr inte dagens spel. Försök igen imorgon!";
         modalMid.append(modalMidSubtitle);
     }
 

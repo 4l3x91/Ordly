@@ -3,39 +3,26 @@ let currentGuess = 0;
 let word = "";
 let gameIsActive = true;
 let guessedWords = [];
-let prevGames = [];
+// let prevGames = [];
 let guessResult = "";
 
-async function apiFetch() {
-  let response = await fetch("https://ordlybackend20220713231604.azurewebsites.net/api/v1/ordly");
-  const json = await response.json();
-  console.log(json)
-  return json;
-}
-
-// del
-async function apiFetchId() {
-  let response = await fetch("https://ordlybackend20220713231604.azurewebsites.net/api/v1/ordly");
-  const json = await response.json();
-  return json.dailyGameId;
-}
-
-async function initFetch() {
-  const GetDailyGame = await apiFetch();
-  solutionWord = GetDailyGame.word;
-  solutionId = GetDailyGame.dailyGameId;
-  }
+// async function initFetch() {
+//   const GetDailyGame = await fetchDailyId();
+//   }
 
   async function postGuess() {
+    let body = JSON.stringify({
+      userId: Number(user.userId),
+      userKey: user.userKey,
+      guess: word
+    });
     let response;
-    await fetch("https://ordlybackend20220713231604.azurewebsites.net/api/v2/Ordly/Guess", {
+    await fetch(url + "/api/v1/Ordly/Guess", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        guess: word
-      }),
+      body: body
     })
     .then(result => {
       response = result.json();
@@ -46,70 +33,70 @@ async function initFetch() {
       return response;
   }
 
-  async function addPrevGame() {
-    let prevGame;
-    if(word === solutionWord)
-    {
-      prevGame = {
-        gameID: await apiFetchId(),
-        guesses: currentGuess
-      }
-    }
-    else
-    {
-      prevGame = {
-        gameID: await apiFetchId(),
-        guesses: "X"
-      }
-    }
+  // async function addPrevGame() {
+  //   let prevGame;
+  //   if(word === solutionWord)
+  //   {
+  //     prevGame = {
+  //       gameID: await apiFetchId(),
+  //       guesses: currentGuess
+  //     }
+  //   }
+  //   else
+  //   {
+  //     prevGame = {
+  //       gameID: await apiFetchId(),
+  //       guesses: "X"
+  //     }
+  //   }
 
-    prevGames.push(prevGame);
+    // prevGames.push(prevGame);
     
-    stats = JSON.parse(localStorage.getItem("stats"));
-    const setStats = {
-      totalGames: stats.totalGames.toString(),
-      totalWins: stats.totalWins.toString(),
-      currentStreak: stats.currentStreak.toString(),
-      longestStreak: stats.longestStreak.toString(),
-      previousGames: prevGames
-    }
-    localStorage.setItem("stats", JSON.stringify(setStats));
-  }
+  //   stats = JSON.parse(localStorage.getItem("stats"));
+  //   const setStats = {
+  //     totalGames: stats.totalGames.toString(),
+  //     totalWins: stats.totalWins.toString(),
+  //     currentStreak: stats.currentStreak.toString(),
+  //     longestStreak: stats.longestStreak.toString(),
+  //     previousGames: prevGames
+  //   }
+  //   localStorage.setItem("stats", JSON.stringify(setStats));
+  // }
   async function gameLoop() {
     if (gameIsActive) {
       checkInput();
       word = localStorage.getItem("currentWordGuess") || '';
       renderCurrentGuess();
-      await initLocalStorage();
+      // await initLocalStorage();
     }
   }
 
-  async function initLocalStorage() {
+  // async function initLocalStorage() {
 
-    let stats = JSON.parse(localStorage.getItem("stats"));
-      if (!stats) {
-        prevGames = [];
-        const initStats = {
-          totalGames: 0,
-          totalWins: 0,
-          currentStreak: 0,
-          longestStreak: 0,
-          previousGames: prevGames
-        }
-        localStorage.setItem("stats", JSON.stringify(initStats));
-        stats = JSON.parse(localStorage.getItem("stats"));
-        console.log(stats)
-      }
-      prevGames = stats.previousGames;
-      gameID = await apiFetchId();
-      for (let index = 0; index < prevGames.length; index++) {
-        if(prevGames[index].gameID === gameID)
-        {
-          gameIsActive = false;
-          endGameStyling();
-        }
-      }
-  }
+  //   let stats = JSON.parse(localStorage.getItem("stats"));
+  //     if (!stats) {
+  //       prevGames = [];
+  //       const initStats = {
+  //         totalGames: 0,
+  //         totalWins: 0,
+  //         currentStreak: 0,
+  //         longestStreak: 0,
+  //         previousGames: prevGames
+  //       }
+  //       localStorage.setItem("stats", JSON.stringify(initStats));
+  //       stats = JSON.parse(localStorage.getItem("stats"));
+  //       console.log(stats)
+  //     }
+  //     prevGames = stats.previousGames;
+  //     gameID = await apiFetchId();
+  //     for (let index = 0; index < prevGames.length; index++) {
+  //       if(prevGames[index].gameID === gameID)
+  //       {
+  //         gameIsActive = false;
+  //         endGameStyling();
+  //       }
+  //     }
+  // }
 
   if (gameIsActive) {
     document.addEventListener("keydown", keyPressed);
@@ -216,7 +203,7 @@ async function initFetch() {
   }
 
   function endGame() {
-    addPrevGame();
+    // addPrevGame();
     gameIsActive = false;
     setTimeout(() => {
       openForm();
@@ -294,15 +281,19 @@ async function initFetch() {
 
     for (let i = 0; i < keyboard.length; i++) {
       for (let y = 0; y < keyboard[i].children.length; y++) {
-        if (
-          character === keyboard[i].children[y].getAttribute("data-char") &&
-          !keyboard[i].children[y].classList.contains("right")
-        ) {
+        if (character === keyboard[i].children[y].getAttribute("data-char") && !keyboard[i].children[y].classList.contains("kinda") && !keyboard[i].children[y].classList.contains("right")) {
           setTimeout(() => {
             keyboard[i].children[y].className = classname;
             keyboard[i].children[y].classList.add("flip");
           }, 100 * index);
         }
+        else if (character === keyboard[i].children[y].getAttribute("data-char") && !keyboard[i].children[y].classList.contains("right")) {
+          setTimeout(() => {
+            keyboard[i].children[y].className = classname;
+            keyboard[i].children[y].classList.add("flip");
+          }, 100 * index);
+        }
+        keyboard[i].children[y].classList.remove("flip");
       }
     }
   }
